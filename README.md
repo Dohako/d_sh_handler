@@ -1,2 +1,4 @@
-# d_sh_handler
-Software to constantly update, keep running some programms and reboot device every `n time.
+# Dohako smart home handler
+Made for raspberry pi. 
+
+This is my software to constantly update and keep running some programms. Also this soft will reboot device every n time.
