@@ -139,3 +139,5 @@ voice_rec/model
 
 .idea
 
+*.wav
+
