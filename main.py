@@ -13,7 +13,8 @@ def run_bot():
 
 
 def run_voice_rec():
-    subprocess.run(['python3', voice_rec_dir])
+    pass
+    # subprocess.run(['python3', voice_rec_dir])
 
 
 def new_ver_checker():
