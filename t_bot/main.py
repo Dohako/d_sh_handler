@@ -14,6 +14,7 @@ if os.name != 'nt':
 
 load_dotenv()
 token = os.getenv('MY_TOKEN')
+print(token)
 if os.name != 'nt':
     image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
 else:
