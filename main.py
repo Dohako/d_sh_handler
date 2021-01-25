@@ -13,8 +13,7 @@ def run_bot():
 
 
 def run_voice_rec():
-    pass
-    # subprocess.run(['python3', voice_rec_dir])
+    subprocess.run(['python3', voice_rec_dir])
 
 
 def new_ver_checker():
@@ -54,6 +53,7 @@ def main():
             voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
             voice_recognition_process.start()
             time.sleep(1)
+
         # if checker_process.is_alive() is False:
         #     loguru.logger.info("Started checker")
         #     checker_process = multiprocessing.Process(target=new_ver_checker)

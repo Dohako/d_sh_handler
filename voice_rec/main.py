@@ -9,6 +9,9 @@ import pyaudio
 import pyttsx3
 
 
+while True:
+    pass
+
 hello_list = ['I am listening', 'Yes', 'I am here']
 model = Model("model-ru")
 rate = 110
