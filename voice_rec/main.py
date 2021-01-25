@@ -39,6 +39,7 @@ while True:
         break
     if rec.AcceptWaveform(data):
         first_res = rec.Result()
+        print(first_res)
         if len(first_res) > 17:
             if "компьютер" in first_res:
                 time_start = int(time.time())
@@ -72,4 +73,4 @@ while True:
                 kws = False
     # else:
     # print(rec.PartialResult())
-# print(rec.FinalResult())
+print(rec.FinalResult())
