@@ -11,8 +11,6 @@ class BotHandler:
         method = 'getUpdates'
         params = {'timeout': timeout, 'offset': offset}
         resp = requests.get(self.api_url + method, params)
-        print(resp.json())
-        print(self.token)
         result_json = resp.json()['result']
         return result_json
 
