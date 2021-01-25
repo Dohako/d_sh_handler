@@ -32,6 +32,7 @@ volume_commands = ['звук', 'volume', 'громкость', 'vol', 'v']
 photo_commands = ['p', 'photo', 'take_photo', 'фото', 'сфотографируй']
 
 
+@loguru.logger.catch()
 def main():
     new_offset = None
     today = now.day
