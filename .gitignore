@@ -127,3 +127,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+test
+
+test*.py
+
+t_bot/t_bot_reqs.txt
+voice_rec/voice_rec_reqs.txt
+voice_rec/tests
+voice_rec/model
+
+.idea
+
