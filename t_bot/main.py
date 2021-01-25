@@ -14,7 +14,10 @@ if os.name != 'nt':
 
 load_dotenv()
 token = os.getenv('MY_TOKEN')
-image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
+if os.name != 'nt':
+    image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
+else:
+    image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
 
 bot = BotHandler(token)
 greetings_list = ('hello', '/hi', 'qq', 'greetings')
