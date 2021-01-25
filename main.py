@@ -95,9 +95,9 @@ def main():
 
 if __name__ == '__main__':
     if os.name != 'nt':
-        bot_dir = f"{os.path.dirname(os.path.abspath('.'))}/t_bot/main.py"
-        voice_rec_dir = f"{os.path.dirname(os.path.abspath('.'))}/voice_rec/main.py"
-        image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
+        bot_dir = f"{os.path.abspath('.')}/t_bot/main.py"
+        voice_rec_dir = f"{os.path.abspath('.')}/voice_rec/main.py"
+        image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
     else:
         bot_dir = f"{os.path.dirname(os.path.abspath('.'))}\\t_bot\\main.py"
         voice_rec_dir = f"{os.path.dirname(os.path.abspath('.'))}\\voice_rec\\main.py"
