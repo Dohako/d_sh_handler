@@ -39,7 +39,7 @@ def main():
     hour = now.hour
 
     if os.name != 'nt':
-        m = alsaaudio.Mixer('Headphone')
+        m = alsaaudio.Mixer('Master') # Headphone
         current_volume = m.getvolume()
         m.setvolume(0)
         loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
