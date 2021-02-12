@@ -30,16 +30,16 @@ valid_chats = [388863805, -259505319, -342305508]
 admin_commands_list = ['/add_chat_id', '/show_active_chats']
 volume_commands = ['звук', 'volume', 'громкость', 'vol', 'v']
 photo_commands = ['p', 'photo', 'take_photo', 'фото', 'сфотографируй']
+light_commands = ['l']
 
 
-@loguru.logger.catch()
 def main():
     new_offset = None
     today = now.day
     hour = now.hour
 
     if os.name != 'nt':
-        m = alsaaudio.Mixer('Master') # Headphone
+        m = alsaaudio.Mixer('Master')  # Headphone
         current_volume = m.getvolume()
         m.setvolume(0)
         loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
@@ -123,19 +123,19 @@ def main():
                         if int_volume > 150:
                             m.setvolume(150)
                             bot.send_message(last_chat_id,
-                                                   f"Ставлю звук на максимум")
+                                             f"Ставлю звук на максимум")
                         elif int_volume < 0:
                             m.setvolume(0)
                             bot.send_message(last_chat_id,
-                                                   f"Выключаю звук")
+                                             f"Выключаю звук")
                         else:
                             m.setvolume(int_volume)
                             bot.send_message(last_chat_id,
-                                                   f"Ставлю звук на {int_volume}")
+                                             f"Ставлю звук на {int_volume}")
                     else:
                         m.setvolume(0)
                         bot.send_message(last_chat_id,
-                                               f"Команда не распознана до конца, выключаю звук")
+                                         f"Команда не распознана до конца, выключаю звук")
 
                 else:
                     bot.send_message(last_chat_id, f"Не та ОС")
@@ -161,6 +161,8 @@ def main():
                     bot.send_photo(last_chat_id, photo_name)
                 else:
                     bot.send_message(last_chat_id, f"Ошибка с формированием и отправкой фото")
+            elif cmd in light_commands:
+
         new_offset = last_update_id + 1
         loguru.logger.debug(new_offset)
 

@@ -3,7 +3,9 @@ import yeelight
 import time
 import subprocess
 
-_, device, state = sys.argv
+# python3 devices\main.py yeelight brightness 10
+
+_, device, state, param = sys.argv
 
 
 def turn_on_light_tuya():
@@ -39,5 +41,10 @@ elif device is "yeelight":
             bulb.turn_on()
         elif state is 'off':
             bulb.turn_off()
+        elif state is 'brightness':
+            bulb.set_brightness(int(param))
+        elif state is 'state':
+            if bulbs[0]['capabilities']['power'] == 'on':
+                pass
     else:
         exit(1)
