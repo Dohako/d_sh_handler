@@ -3,7 +3,7 @@ import bs4
 
 
 def main(currency_name):
-    if 'eur' in currency_name.lower:
+    if 'eur' in currency_name.lower():
         URL = 'https://www.finam.ru/quote/mosbirzha-valyutnyj-rynok/eur-rub-fix-1-sec/'
         # URL = 'https://www.moex.com/ru/issue.aspx?board=TQBR&code=MOEX'
         page = requests.get(URL)
@@ -14,3 +14,7 @@ def main(currency_name):
     else:
         answer = 'not implemented'
     return answer
+
+if __name__ == '__main__':
+    a = main('eur')
+    print(a)
