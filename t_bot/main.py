@@ -2,6 +2,7 @@ import sys
 import os
 if os.name != 'nt':
     import alsaaudio
+    # TODO change to dynamic
     sys.path.append(f"/home/pi/d_sh_handler")
 import subprocess
 import time
