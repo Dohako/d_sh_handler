@@ -3,8 +3,7 @@ import bs4
 
 
 def main(currency_name):
-    print(currency_name)
-    if currency_name.lower == 'eur':
+    if 'eur' in currency_name.lower:
         URL = 'https://www.finam.ru/quote/mosbirzha-valyutnyj-rynok/eur-rub-fix-1-sec/'
         # URL = 'https://www.moex.com/ru/issue.aspx?board=TQBR&code=MOEX'
         page = requests.get(URL)
