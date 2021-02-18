@@ -126,6 +126,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # nt for linux
     if os.name != 'nt':
         # main loop scripts dirs
         bot_dir = f"{os.path.abspath('.')}/t_bot/main.py"

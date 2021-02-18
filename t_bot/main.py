@@ -1,8 +1,13 @@
+import sys
+import os
+if os.name != 'nt':
+    import alsaaudio
+    sys.path.append(f"/home/pi/d_sh_handler")
 import subprocess
 import time
 from bot_handler import BotHandler
 from dotenv import load_dotenv
-import os
+
 import datetime
 import loguru
 import pycbrf
@@ -10,8 +15,7 @@ import numpy as np
 import cv2
 import finam_euro
 
-if os.name != 'nt':
-    import alsaaudio
+
 
 load_dotenv()
 token = os.getenv('MY_TOKEN')
