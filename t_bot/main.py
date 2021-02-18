@@ -15,7 +15,7 @@ import pycbrf
 import numpy as np
 import cv2
 import finam_euro
-
+import take_photo
 
 
 load_dotenv()
@@ -163,7 +163,8 @@ def main():
                 # cv2.imwrite(photo_name, frame)
                 # cv2.destroyAllWindows()
                 # cap.release()
-                subprocess.run(['python3', image_proc_dir, cam, photo_name, 'photo'])
+                # subprocess.run(['python3', image_proc_dir, cam, photo_name, 'photo'])
+                take_photo.photo(photo_name, cam)
                 if os.path.exists(photo_name):
                     bot.send_photo(last_chat_id, photo_name)
                 else:
