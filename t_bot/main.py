@@ -21,9 +21,14 @@ import take_photo
 load_dotenv()
 token = os.getenv('MY_TOKEN')
 if os.name != 'nt':
-    image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
+    image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
+    photo_dir = f"{os.path.dirname(os.path.abspath('.'))}/photos"
+    if os.path.isdir(photo_dir) is False:
+        os.mkdir(photo_dir)
 else:
     image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
+
+
 
 bot = BotHandler(token)
 greetings_list = ('hello', '/hi', 'qq', 'greetings')
@@ -148,7 +153,7 @@ def main():
                     bot.send_message(last_chat_id, f"Не та ОС")
 
             elif cmd in photo_commands:
-                photo_name = f'/home/pi/smart-home/camera_1_photos/{datetime.datetime.now().strftime("%d%m%Y-%H%M")}.png'
+                photo_name = f'{photo_dir}/{datetime.datetime.now().strftime("%d%m%Y-%H%M")}.png'
                 # subprocess.call(f'fswebcam -q -r 1280x720 {photo_name}', shell=True)
                 if param is None:
                     cam = 0
