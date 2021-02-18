@@ -6,7 +6,7 @@ import multiprocessing
 import sys
 import psutil
 import pathlib
-
+import bs4
 
 def run_bot():
     subprocess.run(['python3', bot_dir])
@@ -36,10 +36,15 @@ def main():
     loguru.logger.info("trying to start scripts")
     chat_bot_process = multiprocessing.Process(target=run_bot)
     voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
+    # check current versions for all components
+    ver_voice_rec: str = ''
+    ver_chat_bot: str = ''
     kill_voice_rec = False
     kill_bot_proc = False
+    # timers
     time_start = int(time.time())
     checking_time = time_start
+    checking_new_ver_time = time_start
     # checker_process = multiprocessing.Process(target=new_ver_checker)
     while True:
         time.sleep(3)
@@ -85,10 +90,11 @@ def main():
         #     if chat_bot_process.is_alive():
         #         chat_bot_process.terminate()
         #     kill_bot_proc = False
-
         # every 1 minute should happen version checking
-        if new_ver_checker() is True:
-            pass
+        if int(time.time()) > checking_time + 60:
+            checking_time = int(time.time())
+            if new_ver_checker() is True:
+                pass
         # every day at 03:00 should be happening reboot of system
         if restart_time() is True:
             pass
