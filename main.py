@@ -8,6 +8,12 @@ import psutil
 import pathlib
 import bs4
 
+ver_chat_bot: str = ''
+ver_voice_rec: str = ''
+ver_image_proc: str = ''
+ver_devices: str = ''
+
+
 def run_bot():
     subprocess.run(['python3', bot_dir])
 
@@ -17,6 +23,10 @@ def run_voice_rec():
 
 
 def new_ver_checker():
+    pass
+
+
+def update_all():
     pass
 
 
@@ -32,13 +42,27 @@ def restart_time():
     pass
 
 
+def take_versions():
+    global ver_chat_bot, ver_voice_rec, ver_image_proc, ver_devices
+    ver = open(bot_ver_dir, 'r')
+    ver_chat_bot = ver.read()
+
+    ver = open(voice_rec_ver_dir, 'r')
+    ver_voice_rec = ver.read()
+
+    ver = open(image_proc_ver_dir, 'r')
+    ver_image_proc = ver.read()
+
+    ver = open(devices_ver_dir, 'r')
+    ver_devices = ver.read()
+
+
 def main():
     loguru.logger.info("trying to start scripts")
     chat_bot_process = multiprocessing.Process(target=run_bot)
     voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
     # check current versions for all components
-    ver_voice_rec: str = ''
-    ver_chat_bot: str = ''
+    take_versions()
     kill_voice_rec = False
     kill_bot_proc = False
     # timers
@@ -46,6 +70,7 @@ def main():
     checking_time = time_start
     checking_new_ver_time = time_start
     # checker_process = multiprocessing.Process(target=new_ver_checker)
+    # main loop
     while True:
         time.sleep(3)
         if chat_bot_process.is_alive() is False:
@@ -102,13 +127,27 @@ def main():
 
 if __name__ == '__main__':
     if os.name != 'nt':
+        # main loop scripts dirs
         bot_dir = f"{os.path.abspath('.')}/t_bot/main.py"
+        bot_ver_dir = f"{os.path.abspath('.')}/t_bot/ver.txt"
         voice_rec_dir = f"{os.path.abspath('.')}/voice_rec/main.py"
+        voice_rec_ver_dir = f"{os.path.abspath('.')}/voice_rec/ver.txt"
+        # other scripts
         image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
+        image_proc_ver_dir = f"{os.path.abspath('.')}/image_proc/ver.txt"
+
+        devices_ver_dir = f"{os.path.abspath('.')}/devices/ver.txt"
     else:
+        # main loop scripts dirs
         bot_dir = f"{os.path.dirname(os.path.abspath('.'))}\\t_bot\\main.py"
+        bot_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\t_bot\\ver.txt"
         voice_rec_dir = f"{os.path.dirname(os.path.abspath('.'))}\\voice_rec\\main.py"
+        voice_rec_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\voice_rec\\ver.txt"
+        # other scripts
         image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
+        image_proc_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\ver.txt"
+
+        devices_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\devices\\ver.txt"
     loguru.logger.add('log.log')
     while True:
         try:

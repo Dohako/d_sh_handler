@@ -8,6 +8,7 @@ import loguru
 import pycbrf
 import numpy as np
 import cv2
+import finam_euro
 
 if os.name != 'nt':
     import alsaaudio
@@ -106,7 +107,8 @@ def main():
                 rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
                 currency_name = currency_list_correct[currency_list.index(currency)]
                 loguru.logger.debug(currency_name)
-                bot.send_message(last_chat_id, f"1 {currency_name} = {rates[currency_name].value} RUB")
+                moex_answer = finam_euro.main(currency_name)
+                bot.send_message(last_chat_id, f"1 {currency_name} = {rates[currency_name].value} RUB CBRF, {moex_answer} RUB Moex")
             # for currency in currency_list:
             #     if currency in last_chat_text.lower():
             #         rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
@@ -162,6 +164,7 @@ def main():
                 else:
                     bot.send_message(last_chat_id, f"Ошибка с формированием и отправкой фото")
             elif cmd in light_commands:
+                bot.send_message(last_chat_id, f"Это еще не реализовано")
 
         new_offset = last_update_id + 1
         loguru.logger.debug(new_offset)
