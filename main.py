@@ -161,6 +161,7 @@ if __name__ == '__main__':
 
         devices_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\devices\\ver.txt"
         loguru.logger.add('log.log')
+    loguru.logger.info('Started main script')
     while True:
         try:
             if main() is False:
