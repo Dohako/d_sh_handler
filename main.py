@@ -94,7 +94,7 @@ def main():
         # if cpu is bigger than 90% or memory is above 80% - need to turn off scripts and reload them
         if int(time.time()) > checking_time + 5:
             checking_time = int(time.time())
-            loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
+            # loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
             if psutil.virtual_memory().percent > 80 or psutil.cpu_percent() > 90.0:
                 loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
                 loguru.logger.info("Shutting down voice_rec")
