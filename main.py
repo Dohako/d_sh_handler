@@ -7,6 +7,7 @@ import sys
 import psutil
 import pathlib
 import bs4
+from t_bot import main_t_bot
 
 ver_chat_bot: str = ''
 ver_voice_rec: str = ''
@@ -17,14 +18,17 @@ ver_devices: str = ''
 def run_bot():
     loguru.logger.info('-------------------------')
     loguru.logger.info('trying to start bot')
-    subprocess.run(['python3', bot_dir])
+    # subprocess.run(['python3', bot_dir])
+    a = main_t_bot.MainBot()
+
     loguru.logger.info('-------------------------')
 
 
 def run_voice_rec():
     loguru.logger.info('-------------------------')
     loguru.logger.info('trying to start voice_rec')
-    subprocess.run(['python3', voice_rec_dir])
+    # subprocess.run(['python3', voice_rec_dir])
+    time.sleep(10)
     loguru.logger.info('-------------------------')
 
 
@@ -49,18 +53,20 @@ def restart_time():
 
 
 def take_versions():
-    global ver_chat_bot, ver_voice_rec, ver_image_proc, ver_devices
-    ver = open(bot_ver_dir, 'r')
-    ver_chat_bot = ver.read()
-
-    ver = open(voice_rec_ver_dir, 'r')
-    ver_voice_rec = ver.read()
-
-    ver = open(image_proc_ver_dir, 'r')
-    ver_image_proc = ver.read()
-
-    ver = open(devices_ver_dir, 'r')
-    ver_devices = ver.read()
+    pass
+    #
+    # global ver_chat_bot, ver_voice_rec, ver_image_proc, ver_devices
+    # ver = open(bot_ver_dir, 'r')
+    # ver_chat_bot = ver.read()
+    #
+    # ver = open(voice_rec_ver_dir, 'r')
+    # ver_voice_rec = ver.read()
+    #
+    # ver = open(image_proc_ver_dir, 'r')
+    # ver_image_proc = ver.read()
+    #
+    # ver = open(devices_ver_dir, 'r')
+    # ver_devices = ver.read()
 
 
 @loguru.logger.catch()
@@ -85,12 +91,15 @@ def main():
             chat_bot_process = multiprocessing.Process(target=run_bot)
             chat_bot_process.start()
             time.sleep(1)
-        if voice_recognition_process.is_alive() is False:
-            loguru.logger.info("Started voice_rec")
-            voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
-            loguru.logger.info(voice_recognition_process.is_alive())
-            voice_recognition_process.start()
-            time.sleep(1)
+        # TODO restore voice_rec
+        # if voice_recognition_process.is_alive() is False:
+        #     pass
+        #
+        #     loguru.logger.info("Started voice_rec")
+        #     voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
+        #     loguru.logger.info(voice_recognition_process.is_alive())
+        #     voice_recognition_process.start()
+        #     time.sleep(1)
 
         # if checker_process.is_alive() is False:
         #     loguru.logger.info("Started checker")
@@ -101,18 +110,21 @@ def main():
         if int(time.time()) > checking_time + 5:
             checking_time = int(time.time())
             # loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
-            if psutil.virtual_memory().percent > 80 or psutil.cpu_percent() > 90.0:
-                loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
+            if psutil.virtual_memory().percent > 90 or psutil.cpu_percent() > 90.0:
+                loguru.logger.info(psutil.virtual_memory().percent)
+                loguru.logger.info(psutil.cpu_percent())
                 loguru.logger.info("Shutting down voice_rec")
                 if voice_recognition_process.is_alive():
                     voice_recognition_process.terminate()
                 time.sleep(1)
-                loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
+                loguru.logger.info(psutil.virtual_memory().percent)
+                loguru.logger.info(psutil.cpu_percent())
                 loguru.logger.info("Shutting down chat_bot")
                 if chat_bot_process.is_alive():
                     chat_bot_process.terminate()
                 time.sleep(1)
-                loguru.logger.info(psutil.virtual_memory().percent, psutil.cpu_percent())
+                loguru.logger.info(psutil.virtual_memory().percent)
+                loguru.logger.info(psutil.cpu_percent())
                 loguru.logger.info("Resuming work")
 
         # if kill_voice_rec is True:
