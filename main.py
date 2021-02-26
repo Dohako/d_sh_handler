@@ -7,6 +7,9 @@ import sys
 import psutil
 import pathlib
 import bs4
+if os.name != 'nt':
+    # TODO change to dynamic
+    sys.path.append("/home/pi/d_sh_handler")
 from t_bot import main_t_bot
 
 ver_chat_bot: str = ''
