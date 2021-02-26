@@ -21,8 +21,10 @@ import take_photo
 load_dotenv()
 token = os.getenv('MY_TOKEN')
 if os.name != 'nt':
-    image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
-    photo_dir = f"{os.path.dirname(os.path.abspath('.'))}/photos"
+    # image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
+    # photo_dir = f"{os.path.dirname(os.path.abspath('.'))}/photos"
+    image_proc_dir = f"/home/pi/d_sh_handler/image_proc/main.py"
+    photo_dir = f"/home/pi/d_sh_handler/photos"
     if os.path.isdir(photo_dir) is False:
         os.mkdir(photo_dir)
 else:
