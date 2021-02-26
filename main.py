@@ -15,11 +15,17 @@ ver_devices: str = ''
 
 
 def run_bot():
+    loguru.logger.info('-------------------------')
+    loguru.logger.info('trying to start bot')
     subprocess.run(['python3', bot_dir])
+    loguru.logger.info('-------------------------')
 
 
 def run_voice_rec():
+    loguru.logger.info('-------------------------')
+    loguru.logger.info('trying to start voice_rec')
     subprocess.run(['python3', voice_rec_dir])
+    loguru.logger.info('-------------------------')
 
 
 def new_ver_checker():
