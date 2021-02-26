@@ -1,3 +1,4 @@
+beautifulsoup4==4.9.3
 certifi==2020.12.5
 chardet==4.0.0
 colorama==0.4.4
@@ -12,13 +13,7 @@ psutil==5.8.0
 pycbrf==1.1.0
 python-dotenv==0.15.0
 requests==2.25.1
+soupsieve==2.2
 urllib3==1.26.2
 win32-setctime==1.0.3
 yeelight==0.5.4
-docopt==0.6.2
-num2words==0.5.10
-py-espeak-ng==0.1.8
-PyAudio==0.2.11
-pyttsx3==2.90
-vosk==0.3.7
-pyalsaaudio==0.9.0
