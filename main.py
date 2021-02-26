@@ -5,6 +5,7 @@ if os.name != 'nt':
     loguru.logger.info("Hello there")
 else:
     loguru.logger.add('log.log')
+
 import time
 import subprocess
 import multiprocessing
@@ -16,7 +17,9 @@ if os.name != 'nt':
     # TODO change to dynamic
     sys.path.append("/home/pi/d_sh_handler")
     sys.path.append("/home/pi/d_sh_handler/t_bot")
+loguru.logger.info("Importing main_t_bot")
 import main_t_bot
+loguru.logger.info("Imported")
 
 ver_chat_bot: str = ''
 ver_voice_rec: str = ''
