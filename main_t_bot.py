@@ -56,7 +56,8 @@ class MainBot:
                 self.main()
             except KeyboardInterrupt:
                 quit()
-            except:
+            except Exception as ex:
+                loguru.logger.error(ex)
                 loguru.logger.info("Exception occurred, waiting 15 secs and rebooting script")
                 time.sleep(15)
 
