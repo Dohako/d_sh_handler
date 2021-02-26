@@ -147,6 +147,7 @@ if __name__ == '__main__':
         image_proc_ver_dir = f"/home/pi/d_sh_handler/image_proc/ver.txt"
 
         devices_ver_dir = f"/home/pi/d_sh_handler/devices/ver.txt"
+        loguru.logger.add('/home/pi/d_sh_handler/log.log')
     else:
         # main loop scripts dirs
         bot_dir = f"{os.path.dirname(os.path.abspath('.'))}\\t_bot\\main.py"
@@ -158,7 +159,7 @@ if __name__ == '__main__':
         image_proc_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\ver.txt"
 
         devices_ver_dir = f"{os.path.dirname(os.path.abspath('.'))}\\devices\\ver.txt"
-    loguru.logger.add('log.log')
+        loguru.logger.add('log.log')
     while True:
         try:
             if main() is False:
