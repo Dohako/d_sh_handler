@@ -19,7 +19,7 @@ import bs4
 #     sys.path.append("/home/pi/d_sh_handler/t_bot")
 loguru.logger.info("Importing main_t_bot")
 try:
-    import main_t_bot
+    from t_bot import main_t_bot
 except Exception as ex:
     loguru.logger.error(ex)
     quit()
