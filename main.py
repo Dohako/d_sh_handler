@@ -11,7 +11,7 @@ if os.name != 'nt':
     # TODO change to dynamic
     sys.path.append("/home/pi/d_sh_handler")
     sys.path.append("/home/pi/d_sh_handler/t_bot")
-from t_bot import main_t_bot
+import main_t_bot
 
 ver_chat_bot: str = ''
 ver_voice_rec: str = ''
