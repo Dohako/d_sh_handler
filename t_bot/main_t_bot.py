@@ -66,7 +66,16 @@ class MainBot:
         hour = self.now.hour
 
         if os.name != 'nt':
-            m = alsaaudio.Mixer('Master')  # Headphone
+            mixers = alsaaudio.mixers()
+            if 'Master' in mixers:
+                m = alsaaudio.Mixer('Master')  # Headphone
+            elif 'Headphone' in mixers:
+                m = alsaaudio.Mixer('Headphone')
+            else:
+                loguru.logger.info(mixers)
+                loguru.logger.info('cant find mixer, help')
+                m = None
+                quit()
             current_volume = m.getvolume()
             m.setvolume(0)
             loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
