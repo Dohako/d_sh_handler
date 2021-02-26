@@ -129,15 +129,24 @@ if __name__ == '__main__':
     # nt for linux
     if os.name != 'nt':
         # main loop scripts dirs
-        bot_dir = f"{os.path.abspath('.')}/t_bot/main.py"
-        bot_ver_dir = f"{os.path.abspath('.')}/t_bot/ver.txt"
-        voice_rec_dir = f"{os.path.abspath('.')}/voice_rec/main.py"
-        voice_rec_ver_dir = f"{os.path.abspath('.')}/voice_rec/ver.txt"
+        # bot_dir = f"{os.path.abspath('.')}/t_bot/main.py"
+        # bot_ver_dir = f"{os.path.abspath('.')}/t_bot/ver.txt"
+        # voice_rec_dir = f"{os.path.abspath('.')}/voice_rec/main.py"
+        # voice_rec_ver_dir = f"{os.path.abspath('.')}/voice_rec/ver.txt"
+        # # other scripts
+        # image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
+        # image_proc_ver_dir = f"{os.path.abspath('.')}/image_proc/ver.txt"
+        #
+        # devices_ver_dir = f"{os.path.abspath('.')}/devices/ver.txt"
+        bot_dir = f"/home/pi/d_sh_handler/t_bot/main.py"
+        bot_ver_dir = f"/home/pi/d_sh_handler/t_bot/ver.txt"
+        voice_rec_dir = f"/home/pi/d_sh_handler/voice_rec/main.py"
+        voice_rec_ver_dir = f"/home/pi/d_sh_handler/voice_rec/ver.txt"
         # other scripts
-        image_proc_dir = f"{os.path.abspath('.')}/image_proc/main.py"
-        image_proc_ver_dir = f"{os.path.abspath('.')}/image_proc/ver.txt"
+        image_proc_dir = f"/home/pi/d_sh_handler/image_proc/main.py"
+        image_proc_ver_dir = f"/home/pi/d_sh_handler/image_proc/ver.txt"
 
-        devices_ver_dir = f"{os.path.abspath('.')}/devices/ver.txt"
+        devices_ver_dir = f"/home/pi/d_sh_handler/devices/ver.txt"
     else:
         # main loop scripts dirs
         bot_dir = f"{os.path.dirname(os.path.abspath('.'))}\\t_bot\\main.py"

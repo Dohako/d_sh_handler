@@ -171,6 +171,7 @@ def main():
                 try:
                     subprocess.run(['python3', image_proc_dir, cam, photo_name, 'photo'])
                 except:
+                    print('failed on subprocess')
                     take_photo.photo(photo_name, cam)
                 if os.path.exists(photo_name):
                     bot.send_photo(last_chat_id, photo_name)
