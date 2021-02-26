@@ -186,11 +186,15 @@ def main():
 
 
 if __name__ == '__main__':
+    if os.name != 'nt':
+        loguru.logger.add('/home/pi/d_sh_handler/log.log')
+    else:
+        loguru.logger.add('log.log')
     while True:
         try:
             main()
         except KeyboardInterrupt:
             exit()
         except:
-            loguru.logger.debug("Exception occured, waiting 15 secs and rebooting script")
+            loguru.logger.info("Exception occured, waiting 15 secs and rebooting script")
             time.sleep(15)
