@@ -31,7 +31,6 @@ else:
     image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
 
 
-
 bot = BotHandler(token)
 greetings_list = ('hello', '/hi', 'qq', 'greetings')
 currency_list = ("eur", "usd")

@@ -56,7 +56,7 @@ def take_versions():
     ver = open(devices_ver_dir, 'r')
     ver_devices = ver.read()
 
-
+@loguru.logger.catch()
 def main():
     loguru.logger.info("trying to start scripts")
     chat_bot_process = multiprocessing.Process(target=run_bot)
