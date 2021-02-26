@@ -2,6 +2,7 @@ import multiprocessing
 import time
 import t_multiproc_sub
 import t_multiproc_sub_2
+import loguru
 
 
 class MyClass():
@@ -12,14 +13,18 @@ class MyClass():
         second.start()
         for i in range(5):
             time.sleep(1)
-            print(first.is_alive())
+            loguru.logger.info(first.is_alive())
 
     def start_test(self):
+        loguru.logger.info("Starting first")
         t_multiproc_sub.Test()
 
     def start_test_2(self):
+        loguru.logger.info("Starting second")
         t_multiproc_sub_2.Test2()
 
 
 if __name__ == '__main__':
+    loguru.logger.add('/home/pi/d_sh_handler/try_one/log.log')
+    loguru.logger.info("Started")
     a = MyClass()
