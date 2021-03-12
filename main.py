@@ -204,3 +204,5 @@ if __name__ == '__main__':
                 quit()
         except KeyboardInterrupt:
             quit()
+        except:
+            os.system('/home/pi/d_sh_handler/reboot.sh')

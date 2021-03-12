@@ -50,6 +50,7 @@ class MainBot:
         self.volume_commands = ['звук', 'volume', 'громкость', 'vol', 'v']
         self.photo_commands = ['p', 'photo', 'take_photo', 'фото', 'сфотографируй']
         self.light_commands = ['l']
+        self.state_commands = ['s','state']
 
         while True:
             try:
