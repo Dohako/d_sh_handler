@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import datetime
 
 
 class VideoHandler():
@@ -26,5 +25,7 @@ class VideoHandler():
             out.release()
 
 
-
+if __name__ == '__main__':
+    a = VideoHandler('test')
+    a.run()
 
