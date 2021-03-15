@@ -27,6 +27,13 @@ class BotHandler:
         resp = requests.post(self.api_url + method, data=data, files=files)
         return resp
 
+    def send_video(self,chat_id,video):
+        data = {'chat_id': chat_id}
+        files = {'video': open(video, 'rb')}
+        method = 'sendVideo'
+        resp = requests.post(self.api_url + method, data=data, files=files)
+        return resp
+
     def get_last_update(self):
         get_result = self.get_updates()
         if len(get_result) > 0:

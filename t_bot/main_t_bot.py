@@ -2,7 +2,6 @@ import sys
 import os
 if os.name != 'nt':
     import alsaaudio
-
     # TODO change to dynamic
     sys.path.append(f"/home/pi/d_sh_handler")
 import subprocess
@@ -12,10 +11,11 @@ from dotenv import load_dotenv
 import datetime
 import loguru
 import pycbrf
-import numpy as np
-import cv2
 import finam_euro
 import take_photo
+from devices import video
+import multiprocessing
+import glob
 
 
 class MainBot:
@@ -35,6 +35,9 @@ class MainBot:
             self.photo_dir = f"/home/pi/d_sh_handler/photos"
             if os.path.isdir(self.photo_dir) is False:
                 os.mkdir(self.photo_dir)
+            self.video_dir = f"/home/pi/d_sh_handler/videos"
+            if os.path.isdir(self.video_dir) is False:
+                os.mkdir(self.video_dir)
         else:
             self.image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}\\image_proc\\main.py"
 
@@ -49,8 +52,15 @@ class MainBot:
         self.admin_commands_list = ['/add_chat_id', '/show_active_chats']
         self.volume_commands = ['звук', 'volume', 'громкость', 'vol', 'v']
         self.photo_commands = ['p', 'photo', 'take_photo', 'фото', 'сфотографируй']
+        self.video_commands = ['video', 'start_video']
         self.light_commands = ['l']
         self.state_commands = ['s','state']
+        self.video_processing = None
+        self.video_trigger = False
+        self.chat_to_send_video = None
+        self.my_stamp_for_video = None
+        self.record_qty = None
+        self.video_name = None
 
         while True:
             try:
@@ -60,6 +70,9 @@ class MainBot:
             except:
                 loguru.logger.info("Exception occurred, waiting 15 secs and rebooting script")
                 time.sleep(15)
+
+    def send_message(self, last_chat_id):
+        self.bot.send_message(last_chat_id, f"_")
 
     def main(self):
         new_offset = None
@@ -161,21 +174,26 @@ class MainBot:
                         loguru.logger.debug("Управление звуком зарегистрировано")
                         volume = param
                         if volume.isdigit():
+                            # TODO change way to control sound level
                             int_volume = int(volume)
                             if int_volume > 150:
                                 m.setvolume(150)
+                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '100%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Ставлю звук на максимум")
                             elif int_volume < 0:
                                 m.setvolume(0)
+                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Выключаю звук")
                             else:
                                 m.setvolume(int_volume)
+                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', f'{int_volume}%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Ставлю звук на {int_volume}")
                         else:
                             m.setvolume(0)
+                            subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                             self.bot.send_message(last_chat_id,
                                                   f"Команда не распознана до конца, выключаю звук")
 
@@ -192,28 +210,54 @@ class MainBot:
                             cam = int(param)
                         else:
                             cam = 0
-                    # cap = cv2.VideoCapture(cam)
-                    # ret,frame = cap.read()
-                    # cv2.imshow('img1', frame)
-                    # cv2.imwrite(photo_name, frame)
-                    # cv2.destroyAllWindows()
-                    # cap.release()
                     # TODO make class and refactor
-                    # try:
-                    #     subprocess.run(['python3', self.image_proc_dir, cam, photo_name, 'photo'])
-                    # except:
-                    #     print('failed on subprocess')
                     take_photo.photo(photo_name, cam)
                     if os.path.exists(photo_name):
                         self.bot.send_photo(last_chat_id, photo_name)
                     else:
                         self.bot.send_message(last_chat_id, f"Ошибка с формированием и отправкой фото")
+                elif cmd in self.video_commands:
+
+                    if self.video_trigger is True:
+                        self.bot.send_message(last_chat_id, f"Запись проводится")
+                        new_offset = last_update_id + 1
+                        continue
+                    self.bot.send_message(last_chat_id, f"Начинаю запись видео")
+                    self.my_stamp_for_video = datetime.datetime.now().strftime("%d%m%Y-%H%M")
+                    self.video_name = f'{self.video_dir}/{self.my_stamp_for_video}'
+                    if param is None:
+                        self.record_qty = 1
+                    else:
+                        if param.isdigit():
+                            self.record_qty = int(param)
+                        else:
+                            self.record_qty = 1
+                    try:
+                        self.video_processing = multiprocessing.Process(target=self.video_thread)
+                    except Exception as ex:
+                        self.bot.send_message(last_chat_id, f"{ex}")
+                        new_offset = last_update_id + 1
+                        continue
+                    self.video_trigger = True
+                    self.chat_to_send_video = last_chat_id
+                    self.bot.send_message(last_chat_id, f"Запись начата")
+
                 elif cmd in self.light_commands:
                     self.bot.send_message(last_chat_id, f"Это еще не реализовано")
-
+            if self.video_trigger:
+                if self.video_processing.is_alive() is False:
+                    list_of_videos = glob.glob(os.path.abspath(f'{self.video_dir}/*'))
+                    for video_name in list_of_videos:
+                        if video_name.split("/")[-1].split('_')[0] == self.my_stamp_for_video:
+                            self.bot.send_video(self.chat_to_send_video, video_name)
+                    self.video_trigger = False
             new_offset = last_update_id + 1
             loguru.logger.debug(new_offset)
 
+    def video_thread(self):
+        v = video.VideoHandler(record_qty=self.record_qty,
+                               video_file_name_wout_avi=self.video_name)
+        v.run()
 
 if __name__ == '__main__':
     a = MainBot()
