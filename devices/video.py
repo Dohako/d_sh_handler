@@ -19,6 +19,7 @@ class VideoHandler():
                 self.record_time -= 1
                 img = cv2.VideoCapture(self.camera)
                 ret, frame = img.read()
+                cv2.imshow('123',frame)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 out.write(frame)
             cv2.destroyAllWindows()
