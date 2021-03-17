@@ -12,7 +12,7 @@ class VideoHandler():
 
     def run(self):
         for i in range(self.record_qty):
-            cap = cv2.VideoCapture(0)
+            cap = cv2.VideoCapture(self.camera)
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
             out = cv2.VideoWriter(f'{self.video_file_name}_{i}.avi',
                                   fourcc, 20.0, self.screen_size)
