@@ -259,6 +259,7 @@ class MainBot:
                                video_file_name_wout_avi=self.video_name)
         v.run()
 
+
 if __name__ == '__main__':
     a = MainBot()
     # while True:

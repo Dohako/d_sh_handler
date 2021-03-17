@@ -9,5 +9,6 @@ def photo(photo_name, cam=0):
     cv2.destroyAllWindows()
     cap.release()
 
+
 if __name__ == '__main__':
     photo('./test.png')
