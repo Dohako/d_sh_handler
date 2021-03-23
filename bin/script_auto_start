@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Doing autorun script..."
+cd /home/pi/d_sh_handler
+python3 main.py
