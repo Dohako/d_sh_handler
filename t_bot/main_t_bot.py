@@ -57,6 +57,7 @@ class MainBot:
         self.state_commands = ['s','state']
         self.show_last_logs_commands = ['show_last_log']
         self.admin_reboot_device_commands = ['reboot']
+        self.renew_ver_git_commands = ['git_renew']
         self.video_processing = None
         self.video_trigger = False
         self.chat_to_send_video = None
@@ -75,6 +76,14 @@ class MainBot:
 
     def send_message(self, last_chat_id):
         self.bot.send_message(last_chat_id, f"_")
+
+    def send_greetings(self,chat,name, time_now):
+        if 6 <= time_now < 12:
+            self.bot.send_message(chat, f"Доброе утро, {name}")
+        elif 12 <= time_now < 18:
+            self.bot.send_message(chat, f"Добрый день, {name}")
+        elif 18 <= time_now < 23:
+            self.bot.send_message(chat, f"Добрый вечер, {name}")
 
     def main(self):
         new_offset = None
@@ -129,14 +138,18 @@ class MainBot:
             #     new_offset = last_update_id + 1
             #     continue
             last_chat_id = last_update['message']['chat']['id']
+            last_message_sender_name = last_update['message']['from']['first_name']
             if last_chat_id not in self.valid_chats:
+                message_to_send = f'unregistered attempt with {last_message_sender_name}, {last_chat_id}, {last_chat_text}'
+                loguru.logger.info(message_to_send)
+                self.bot.send_message(self.admin_id, message_to_send)
                 new_offset = last_update_id + 1
                 continue
             # if 'first_name' in last_update['message']['chat']:
             #     last_private_chat_name = last_update['message']['chat']['first_name']
             # else:
             #     last_chat_name = last_update['message']['from']['first_name']
-            last_message_sender_name = last_update['message']['from']['first_name']
+
             message = last_chat_text.lower()
             if self.bot_key in message:
                 if message == self.bot_key:
@@ -149,12 +162,10 @@ class MainBot:
                 else:
                     param = None
                 if cmd in self.greetings_list:
-                    if 6 <= hour < 12:
-                        self.bot.send_message(last_chat_id, f"Доброе утро, {last_message_sender_name}")
-                    elif 12 <= hour < 18:
-                        self.bot.send_message(last_chat_id, f"Добрый день, {last_message_sender_name}")
-                    elif 18 <= hour < 23:
-                        self.bot.send_message(last_chat_id, f"Добрый вечер, {last_message_sender_name}")
+                    self.send_greetings(last_chat_id,last_message_sender_name,hour)
+
+                elif cmd in self.renew_ver_git_commands:
+
                 elif cmd in self.currency_list:
                     currency = self.currency_list[self.currency_list.index(cmd)]
                     rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
@@ -180,24 +191,24 @@ class MainBot:
                             int_volume = int(volume)
                             if int_volume > 150:
                                 # m.setvolume(150)
-                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '100%'])
+                                audio_answer = subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '100%'])
                                 self.bot.send_message(last_chat_id,
-                                                      f"Ставлю звук на максимум")
+                                                      f"Ставлю звук на максимум({audio_answer})")
                             elif int_volume < 0:
                                 # m.setvolume(0)
-                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
+                                audio_answer = subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                                 self.bot.send_message(last_chat_id,
-                                                      f"Выключаю звук")
+                                                      f"Выключаю звук({audio_answer})")
                             else:
                                 # m.setvolume(int_volume)
-                                subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', f'{int_volume}%'])
+                                audio_answer = subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', f'{int_volume}%'])
                                 self.bot.send_message(last_chat_id,
-                                                      f"Ставлю звук на {int_volume}")
+                                                      f"Ставлю звук на {int_volume}({audio_answer})")
                         else:
                             # m.setvolume(0)
-                            subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
+                            audio_answer = subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                             self.bot.send_message(last_chat_id,
-                                                  f"Команда не распознана до конца, выключаю звук")
+                                                  f"Команда не распознана до конца, выключаю звук({audio_answer})")
 
                     else:
                         self.bot.send_message(last_chat_id, f"Не та ОС")
