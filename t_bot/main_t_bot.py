@@ -165,7 +165,7 @@ class MainBot:
                     self.send_greetings(last_chat_id,last_message_sender_name,hour)
 
                 elif cmd in self.renew_ver_git_commands:
-
+                    pass
                 elif cmd in self.currency_list:
                     currency = self.currency_list[self.currency_list.index(cmd)]
                     rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
