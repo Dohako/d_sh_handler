@@ -55,6 +55,8 @@ class MainBot:
         self.video_commands = ['video', 'start_video']
         self.light_commands = ['l']
         self.state_commands = ['s','state']
+        self.show_last_logs_commands = ['show_last_log']
+        self.admin_reboot_device_commands = ['reboot']
         self.video_processing = None
         self.video_trigger = False
         self.chat_to_send_video = None
@@ -90,9 +92,9 @@ class MainBot:
                 loguru.logger.info('cant find mixer, help')
                 m = None
                 # quit()
-            current_volume = m.getvolume()
-            m.setvolume(0)
-            loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
+            # current_volume = m.getvolume()
+            # m.setvolume(0)
+            # loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
         else:
             m = None
 
