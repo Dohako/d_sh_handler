@@ -89,7 +89,7 @@ class MainBot:
                 loguru.logger.info(mixers)
                 loguru.logger.info('cant find mixer, help')
                 m = None
-                quit()
+                # quit()
             current_volume = m.getvolume()
             m.setvolume(0)
             loguru.logger.debug(f'current volume is set from {current_volume} to {0}')
@@ -177,22 +177,22 @@ class MainBot:
                             # TODO change way to control sound level
                             int_volume = int(volume)
                             if int_volume > 150:
-                                m.setvolume(150)
+                                # m.setvolume(150)
                                 subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '100%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Ставлю звук на максимум")
                             elif int_volume < 0:
-                                m.setvolume(0)
+                                # m.setvolume(0)
                                 subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Выключаю звук")
                             else:
-                                m.setvolume(int_volume)
+                                # m.setvolume(int_volume)
                                 subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', f'{int_volume}%'])
                                 self.bot.send_message(last_chat_id,
                                                       f"Ставлю звук на {int_volume}")
                         else:
-                            m.setvolume(0)
+                            # m.setvolume(0)
                             subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '0%'])
                             self.bot.send_message(last_chat_id,
                                                   f"Команда не распознана до конца, выключаю звук")
