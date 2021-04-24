@@ -10,9 +10,8 @@ from t_bot import bot_handler
 from dotenv import load_dotenv
 import datetime
 import loguru
-import pycbrf
-import finam_euro
-import take_photo
+from utils.courses import scrap_currency_from_page, get_pycbrf_course
+from utils.take_photo import photo
 from devices import video
 import multiprocessing
 import glob
@@ -28,6 +27,7 @@ class MainBot:
 
         load_dotenv()
         token = os.getenv('MY_TOKEN')
+
         if os.name != 'nt':
             # image_proc_dir = f"{os.path.dirname(os.path.abspath('.'))}/image_proc/main.py"
             # photo_dir = f"{os.path.dirname(os.path.abspath('.'))}/photos"
@@ -168,12 +168,14 @@ class MainBot:
                     pass
                 elif cmd in self.currency_list:
                     currency = self.currency_list[self.currency_list.index(cmd)]
-                    rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
+                    # rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
                     currency_name = self.currency_list_correct[self.currency_list.index(currency)]
+                    # pycbrf_todays_currency = rates[currency_name].value
+                    pycbrf_todays_currency = get_pycbrf_course(currency_name)
                     loguru.logger.debug(currency_name)
-                    moex_answer = finam_euro.main(currency_name)
+                    moex_answer = scrap_currency_from_page(currency_name)
                     self.bot.send_message(last_chat_id,
-                                          f"1 {currency_name} = {rates[currency_name].value} RUB CBRF, "
+                                          f"1 {currency_name} = {pycbrf_todays_currency} RUB CBRF, "
                                           f"{moex_answer} RUB Moex")
                 # for currency in currency_list:
                 #     if currency in last_chat_text.lower():
@@ -224,7 +226,7 @@ class MainBot:
                         else:
                             cam = 0
                     # TODO make class and refactor
-                    take_photo.photo(photo_name, cam)
+                    photo(photo_name, cam)
                     if os.path.exists(photo_name):
                         self.bot.send_photo(last_chat_id, photo_name)
                     else:
