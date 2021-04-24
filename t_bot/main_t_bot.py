@@ -9,12 +9,11 @@ from loguru import logger
 from multiprocessing import Process
 from glob import glob
 
-# if os_name != 'nt':
-#     # TODO change to dynamic
-#     path.append(f"/home/pi/d_sh_handler")
+if os_name != 'nt':
+    # TODO change to dynamic
+    path.append(f"/home/pi/d_sh_handler")
 
 from t_bot.bot_handler import BotHandler
-# from t_bot import bot_handler
 from utils.courses import scrap_currency_from_page, get_pycbrf_course
 from utils.take_photo import photo
 from devices import video
@@ -84,6 +83,16 @@ class MainBot:
         elif 18 <= time_now < 23:
             self.bot.send_message(chat, f"Добрый вечер, {name}")
 
+    def get_currency(self, command):
+        currency = self.currency_list[self.currency_list.index(command)]
+        # rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
+        currency_name = self.currency_list_correct[self.currency_list.index(currency)]
+        # pycbrf_todays_currency = rates[currency_name].value
+        pycbrf_todays_currency = get_pycbrf_course(currency_name)
+        logger.debug(currency_name)
+        moex_answer = scrap_currency_from_page(currency_name)
+        return currency_name, pycbrf_todays_currency, moex_answer
+
     def main(self):
         new_offset = None
         # today = self.now.day
@@ -150,13 +159,7 @@ class MainBot:
                 elif cmd in self.renew_ver_git_commands:
                     pass
                 elif cmd in self.currency_list:
-                    currency = self.currency_list[self.currency_list.index(cmd)]
-                    # rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
-                    currency_name = self.currency_list_correct[self.currency_list.index(currency)]
-                    # pycbrf_todays_currency = rates[currency_name].value
-                    pycbrf_todays_currency = get_pycbrf_course(currency_name)
-                    logger.debug(currency_name)
-                    moex_answer = scrap_currency_from_page(currency_name)
+                    currency_name, pycbrf_todays_currency, moex_answer = self.get_currency(cmd)
                     self.bot.send_message(last_chat_id,
                                           f"1 {currency_name} = {pycbrf_todays_currency} RUB CBRF, "
                                           f"{moex_answer} RUB Moex")
