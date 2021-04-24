@@ -171,7 +171,7 @@ class MainClass:
 
 if __name__ == '__main__':
     # nt for linux
-    path = abspath(__file__)
+    path = dirname(__file__)
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     # if name != 'nt':
