@@ -54,7 +54,7 @@ class MainClass:
         # ver_devices = ver.read()
 
     @logger.catch()
-    def main(self):
+    def start(self):
         logger.info("trying to start scripts")
         chat_bot_process = Process(target=self.run_bot)
         voice_recognition_process = Process(target=self.run_voice_rec)
@@ -162,9 +162,10 @@ if __name__ == '__main__':
         logger.add('log.log')
     logger.info('Started main script')
 
+    main_proc = MainClass()
     while True:
         try:
-            MainClass.main()
+            main_proc.start()
         except KeyboardInterrupt:
             quit()
         except Exception:
