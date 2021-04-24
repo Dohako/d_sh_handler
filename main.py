@@ -171,12 +171,14 @@ class MainClass:
 
 if __name__ == '__main__':
     # nt for linux
-    if isdir('logs') is False:
-        mkdir('logs')
+    path = abspath(__file__)
+    if isdir(f'{path}/logs') is False:
+        mkdir(f'{path}/logs')
     # if name != 'nt':
     #     logger.add(f'logs/log{}.log')
     # else:
-    logger.add(f'logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
+
+    logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
     logger.info('Started main script')
 
     main_proc = MainClass()
