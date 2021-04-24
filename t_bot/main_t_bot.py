@@ -20,11 +20,11 @@ import glob
 class MainBot:
 
     def __init__(self):
-        if os.name != 'nt':
-            loguru.logger.add('/home/pi/d_sh_handler/log.log')
-        else:
-            loguru.logger.add('log.log')
-
+        # if os.name != 'nt':
+        #     loguru.logger.add('/home/pi/d_sh_handler/log.log')
+        # else:
+        #     loguru.logger.add('log.log')
+        loguru.logger.info("Started bot")
         load_dotenv()
         token = os.getenv('MY_TOKEN')
 
