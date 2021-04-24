@@ -1,9 +1,11 @@
 from loguru import logger
-from os import name, system
-from os.path import abspath, dirname
+from os import name, system, mkdir
+from os.path import abspath, dirname, isdir
 from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
+from datetime import datetime
+
 from t_bot.main_t_bot import MainBot
 
 
@@ -156,10 +158,12 @@ class MainClass:
 
 if __name__ == '__main__':
     # nt for linux
-    if name != 'nt':
-        logger.add('/home/pi/d_sh_handler/log.log')
-    else:
-        logger.add('log.log')
+    if isdir('logs') is False:
+        mkdir('logs')
+    # if name != 'nt':
+    #     logger.add(f'logs/log{}.log')
+    # else:
+    logger.add(f'logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
     logger.info('Started main script')
 
     main_proc = MainClass()
