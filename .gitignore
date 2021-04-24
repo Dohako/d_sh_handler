@@ -138,6 +138,7 @@ voice_rec/tests
 voice_rec/model
 
 .idea
+logs
 
 *.wav
 

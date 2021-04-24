@@ -10,7 +10,17 @@ from t_bot.main_t_bot import MainBot
 
 
 class MainClass:
+    """
+    Main class for all d_sh_handler project.
+    It runs all subprocess and keeping them ON.
+    In project we have two interfaces to interact with system: chat bot
+    and voice recognition system
+    """
+
     def run_bot(self):
+        """
+        Method for chat_bot starting
+        """
         logger.info('-------------------------')
         logger.info('trying to start bot')
         # subprocess.run(['python3', bot_dir])
@@ -18,6 +28,9 @@ class MainClass:
         logger.info('-------------------------')
 
     def run_voice_rec(self):
+        """
+        Method for voice recognition starting
+        """
         logger.info('-------------------------')
         logger.info('trying to start voice_rec')
         # subprocess.run(['python3', voice_rec_dir])
