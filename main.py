@@ -182,5 +182,7 @@ if __name__ == '__main__':
             main_proc.start()
         except KeyboardInterrupt:
             quit()
-        except Exception:
+        except Exception as ex:
+            logger.info(ex)
             system('/home/pi/d_sh_handler/reboot.sh')
+    logger.info("Something went not as it is supposed")

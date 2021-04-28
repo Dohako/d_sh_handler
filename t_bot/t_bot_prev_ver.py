@@ -118,7 +118,7 @@ def main():
                 rates = pycbrf.ExchangeRates(datetime.datetime.now().strftime("%Y-%m-%d"))
                 currency_name = currency_list_correct[currency_list.index(currency)]
                 loguru.logger.debug(currency_name)
-                moex_answer = finam_euro.main(currency_name)
+                moex_answer = finam_euro.start_t_bot(currency_name)
                 bot.send_message(last_chat_id, f"1 {currency_name} = {rates[currency_name].value} RUB CBRF, {moex_answer} RUB Moex")
             # for currency in currency_list:
             #     if currency in last_chat_text.lower():

@@ -136,6 +136,8 @@ t_bot/t_bot_reqs.txt
 voice_rec/voice_rec_reqs.txt
 voice_rec/tests
 voice_rec/model
+videos/
+photos/
 
 .idea
 logs
