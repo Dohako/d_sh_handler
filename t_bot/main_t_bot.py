@@ -125,7 +125,7 @@ class MainBot:
         self.bot.send_message(last_chat_id, message)
 
     def take_photo(self, chat, param):
-        photo_name = f'{self.photo_dir}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
+        photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
 
         if param is None:
             cam = 0
