@@ -83,9 +83,10 @@ class MainClass:
         logger.info("2"*100)
         logger.info(str(result))
         if "updated" in result:
-            self.rerun_main()
+            # self.rerun_main()
+            return True
         else:
-            raise
+            return False
 
     @logger.catch()
     def start(self):
@@ -93,6 +94,8 @@ class MainClass:
         chat_bot_process = Process(target=run_bot)
         voice_recognition_process = Process(target=run_voice_rec)
         git_process = Process(target=self.run_git_handler)
+        git_process.start()
+        logger.info("Started git checker!")
         # check current versions for all components
         self.take_versions()
         # kill_voice_rec = False
@@ -111,10 +114,9 @@ class MainClass:
             #     chat_bot_process.start()
             #     sleep(1)
             if git_process.is_alive() is False:
-                logger.info("Started git checker!")
-                git_process = Process(target=self.run_git_handler)
-                git_process.start()
-                sleep(1)
+                # logger.info("Started git checker!")
+                # git_process = Process(target=self.run_git_handler)
+                quit()
             # TODO restore voice_rec
             # if voice_recognition_process.is_alive() is False:
             #     pass
