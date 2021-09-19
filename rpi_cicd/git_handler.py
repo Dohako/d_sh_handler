@@ -18,7 +18,7 @@ def main():
     except Exception as ex:
         logger.info("*"*100)
         logger.info(ex)
-        if "10" in ex:
+        if "10" in str(ex):
             return "repo is updated"
         raise
 # subprocess.run("dir", 
