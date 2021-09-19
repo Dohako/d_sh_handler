@@ -79,6 +79,7 @@ class MainClass:
     def run_git_handler(self):
         logger.info("1"*100)
         result = git_handler.main()
+        
         logger.info("2"*100)
         logger.info(str(result))
         if "updated" in result:
