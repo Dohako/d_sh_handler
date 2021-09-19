@@ -45,7 +45,7 @@ if [[ -z "$git_repository_dir" ]]; then
 fi
 
 if [[ ! -d "$git_repository_dir/.git" ]] || [[ ! -r "$git_repository_dir/.git" ]]; then
-    echo "ERROR: Git directory (-d) not found: '$git_repository_dir/.git'!" >&2
+    echo "ERROR: Git directory (-d) not found: '$git_repos  itory_dir/.git'!" >&2
     print_usage
 fi
 
