@@ -79,7 +79,7 @@ class MainClass:
     def run_git_handler(self):
         logger.info("1"*100)
         result = git_handler.main()
-        
+
         logger.info("2"*100)
         logger.info(str(result))
         if "updated" in result:
@@ -111,7 +111,7 @@ class MainClass:
             #     chat_bot_process.start()
             #     sleep(1)
             if git_process.is_alive() is False:
-                logger.info("Started git checker")
+                logger.info("Started git checker!")
                 git_process = Process(target=self.run_git_handler)
                 git_process.start()
                 sleep(1)
