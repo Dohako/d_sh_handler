@@ -79,8 +79,8 @@ class MainClass:
     def run_git_handler(self):
         logger.info("1"*100)
         result = git_handler.main()
-        logger.info(result)
-        
+        logger.info(str(result))
+
         if "updated" in result:
             self.rerun_main()
         else:
