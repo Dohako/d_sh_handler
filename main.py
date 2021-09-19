@@ -80,6 +80,7 @@ class MainClass:
         logger.info("1"*100)
         result = git_handler.main()
         logger.info(result)
+        
         if "updated" in result:
             self.rerun_main()
         else:
