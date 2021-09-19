@@ -30,6 +30,9 @@ def run_voice_rec():
     sleep(10)
     logger.info('-------------------------')
 
+def run_git_handler():
+    
+
 
 class MainClass:
     """
