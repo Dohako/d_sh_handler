@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "Doing autorun script..."
-cd /home/pi/d_sh_handler/autorun/repo_watcher/git-repo-watcher -d "/home/pi/d_sh_handler"
-cd /home/pi/d_sh_handler
-python3 main.py
+echo "Starting main in 5"
+sleep 5
+echo "Starting main"
+python3 /home/pi/d_sh_handler/main.py

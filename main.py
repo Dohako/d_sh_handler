@@ -7,6 +7,7 @@ from psutil import virtual_memory, cpu_percent
 from datetime import datetime
 
 from t_bot.main_t_bot import MainBot
+from rpi_cicd import git_handler
 
 
 def run_bot():
@@ -29,9 +30,6 @@ def run_voice_rec():
     # subprocess.run(['python3', voice_rec_dir])
     sleep(10)
     logger.info('-------------------------')
-
-def run_git_handler():
-    
 
 
 class MainClass:
@@ -72,12 +70,23 @@ class MainClass:
         #
         # ver = open(devices_ver_dir, 'r')
         # ver_devices = ver.read()
+    
+    def rerun_main(self):
+        print("*"*100)
+        quit()
+
+    def run_git_handler(self):
+        if "updated" in git_handler.main():
+            self.rerun_main()
+        else:
+            raise
 
     @logger.catch()
     def start(self):
         logger.info("trying to start scripts")
         chat_bot_process = Process(target=run_bot)
         voice_recognition_process = Process(target=run_voice_rec)
+        git_process = Process(target=self.run_git_handler)
         # check current versions for all components
         self.take_versions()
         # kill_voice_rec = False
@@ -94,6 +103,11 @@ class MainClass:
                 logger.info("Started chat_bot")
                 chat_bot_process = Process(target=run_bot)
                 chat_bot_process.start()
+                sleep(1)
+            if git_process.is_alive() is False:
+                logger.info("Started git checker")
+                git_process = Process(target=self.run_git_handler)
+                git_process.start()
                 sleep(1)
             # TODO restore voice_rec
             # if voice_recognition_process.is_alive() is False:
