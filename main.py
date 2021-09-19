@@ -83,6 +83,7 @@ class MainClass:
             self.rerun_main()
         else:
             raise
+        
         logger.info("2"*100)
 
     @logger.catch()
