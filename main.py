@@ -117,6 +117,7 @@ class MainClass:
                 # logger.info("Started git checker!")
                 # git_process = Process(target=self.run_git_handler)
                 quit()
+                
             # TODO restore voice_rec
             # if voice_recognition_process.is_alive() is False:
             #     pass
