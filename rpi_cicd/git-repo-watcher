@@ -152,6 +152,7 @@ while true; do
         hook "no_changes" "$repo_name" "$branch"
     elif [[ "$git_local" == "$git_base" ]]; then
         hook "pull_change" "$repo_name" "$branch"
+        break
     elif [[ "$git_remote" == "$git_base" ]]; then
         hook "local_change" "$repo_name" "$branch"
     else
