@@ -74,7 +74,6 @@ class MainClass:
     def rerun_main(self):
         print("*"*100)
         logger.info("3"*100)
-        
         quit()
 
     def run_git_handler(self):
