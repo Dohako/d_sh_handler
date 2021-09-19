@@ -77,10 +77,13 @@ class MainClass:
         quit()
 
     def run_git_handler(self):
-        if "updated" in git_handler.main():
+        logger.info("1"*100)
+        result = git_handler.main()
+        if "updated" in result:
             self.rerun_main()
         else:
             raise
+        logger.info("2"*100)
 
     @logger.catch()
     def start(self):
