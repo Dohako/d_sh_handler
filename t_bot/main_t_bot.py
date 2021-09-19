@@ -8,6 +8,7 @@ from datetime import datetime
 from loguru import logger
 from multiprocessing import Process
 from glob import glob
+from os.path import dirname, isdir
 
 from t_bot.bot_handler import BotHandler
 from utils.courses import scrap_currency_from_page, get_pycbrf_course
@@ -76,6 +77,10 @@ def send_greetings(name, time_now) -> str:
 
 class MainBot:
     def __init__(self):
+        path = dirname(__file__)
+        if isdir(f'{path}/logs') is False:
+            mkdir(f'{path}/logs')
+        logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
         logger.info("Started bot")
         if not load_dotenv():
             logger.info("Problem with .env")
