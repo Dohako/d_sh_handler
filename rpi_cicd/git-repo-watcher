@@ -162,3 +162,4 @@ while true; do
     sleep $interval_in_seconds
 
 done
+echo "123"
