@@ -99,11 +99,11 @@ class MainClass:
         # main loop
         while True:
             sleep(3)
-            if chat_bot_process.is_alive() is False:
-                logger.info("Started chat_bot")
-                chat_bot_process = Process(target=run_bot)
-                chat_bot_process.start()
-                sleep(1)
+            # if chat_bot_process.is_alive() is False:
+            #     logger.info("Started chat_bot")
+            #     chat_bot_process = Process(target=run_bot)
+            #     chat_bot_process.start()
+            #     sleep(1)
             if git_process.is_alive() is False:
                 logger.info("Started git checker")
                 git_process = Process(target=self.run_git_handler)
