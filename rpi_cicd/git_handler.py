@@ -2,11 +2,10 @@
 This script will check git updates every N time and if there is some, then it will pull it and quit
 """
 
-from genericpath import isdir
-from os import name, isdir, mkdir
+from os import mkdir
 from loguru import logger
 from datetime import datetime
-from os.path import dirname
+from os.path import dirname, isdir
 import subprocess
 
 def main():
