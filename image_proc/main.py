@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 import cv2
 
 _, cam, name, mode = sys.argv
