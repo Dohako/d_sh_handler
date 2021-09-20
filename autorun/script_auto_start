@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-echo "Starting main in 5"
-sleep 5
-echo "Starting main"
-python3 /home/pi/d_sh_handler/main.py
+while true; do
+    echo "Starting main in 5"
+    pip3 install -r /home/pi/d_sh_handler/requirements.txt
+    echo "Starting main"
+    sleep 5
+    python3 /home/pi/d_sh_handler/main.py
+done
