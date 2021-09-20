@@ -8,6 +8,11 @@ ____
 
 Данный репозиторий создан для постоянного поддержания актуальности софта на моей Raspberry PI. Предполагается, что так будет проще обновлять и запускать скрипты, которые требуют собственного потока
 
+## Additional
+
+* Ignore two scripts so rpi could start them
+` git update-index --skip-worktree /path/to/autorun/script_auto_start /path/to/rpi_cicd/git-repo-watcher `
+
 ## Known errors
 
 1. `ImportError: libcblas.so.3: cannot open shared object file: No such file or directory`

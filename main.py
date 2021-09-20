@@ -1,6 +1,6 @@
 from loguru import logger
 from os import system, mkdir
-from os.path import dirname, isdir
+from os.path import dirname, isdir, abspath
 from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
@@ -198,7 +198,8 @@ class MainClass:
 
 
 if __name__ == '__main__':
-    path = dirname(__file__)
+    # TODO think of way to understand
+    path = abspath('.')
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
