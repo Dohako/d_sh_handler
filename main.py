@@ -202,6 +202,7 @@ if __name__ == '__main__':
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
+    logger.info(path)
     main_proc = MainClass()
     while True:
         try:
