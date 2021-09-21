@@ -9,7 +9,8 @@ from os.path import dirname, isdir
 import subprocess
 
 def main():
-    path = dirname(__file__)
+    # path = dirname(__file__)
+    path = "/home/pi/d_sh_handler"
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')

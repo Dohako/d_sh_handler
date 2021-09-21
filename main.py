@@ -6,6 +6,7 @@ from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
 from datetime import datetime
+import sys
 
 from t_bot.main_t_bot import MainBot
 from rpi_cicd import git_handler
@@ -199,6 +200,10 @@ class MainClass:
 
 
 if __name__ == '__main__':
+
+    # main_proc = MainClass()
+    # main_proc.check_new_ver_once()
+
     # TODO think of way to understand
     path = "/home/pi/d_sh_handler"
     if isdir(f'{path}/logs') is False:
@@ -207,9 +212,9 @@ if __name__ == '__main__':
     logger.info(abspath('.'))
     logger.info(dirname(__file__))
     logger.info(dirname(__name__))
-    logger.info(__path__)
+    logger.info(sys.path[0])
 
-    main_proc = MainClass()
+    
     while True:
         try:
             main_proc.start()
