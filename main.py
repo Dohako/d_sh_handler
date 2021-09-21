@@ -201,7 +201,7 @@ class MainClass:
 
 if __name__ == '__main__':
 
-    # main_proc = MainClass()
+    main_proc = MainClass()
     # main_proc.check_new_ver_once()
 
     # TODO think of way to understand
