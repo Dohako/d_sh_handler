@@ -97,7 +97,7 @@ class MainClass:
         voice_recognition_process = Process(target=run_voice_rec)
         git_process = Process(target=self.run_git_handler)
         git_process.start()
-        logger.info("Started git checker!")
+        logger.info("Started git checker!!!")
         # check current versions for all components
         self.take_versions()
         # kill_voice_rec = False
