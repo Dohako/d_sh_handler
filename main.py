@@ -1,3 +1,4 @@
+from logging import log
 from loguru import logger
 from os import system, mkdir
 from os.path import dirname, isdir, abspath
@@ -199,11 +200,15 @@ class MainClass:
 
 if __name__ == '__main__':
     # TODO think of way to understand
-    path = abspath('.')
+    path = "/home/pi/d_sh_handler"
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
-    logger.info(path)
+    logger.info(abspath('.'))
+    logger.info(dirname(__file__))
+    logger.info(dirname(__name__))
+    logger.info(__path__)
+
     main_proc = MainClass()
     while True:
         try:
