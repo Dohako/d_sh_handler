@@ -1,4 +1,5 @@
-from telegram import Updater
+# from telegram import Updater
+from telegram.ext import Updater
 from dotenv import load_dotenv
 from os import getenv
 
