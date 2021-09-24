@@ -1,8 +1,12 @@
+APScheduler==3.6.3
+backports.zoneinfo==0.2.1
 beautifulsoup4==4.9.3
+cachetools==4.2.2
 certifi==2020.12.5
 chardet==4.0.0
 colorama==0.4.4
 dbf-light==1.0.0
+EasyProcess==0.3
 future==0.18.2
 idna==2.10
 ifaddr==0.1.7
@@ -12,8 +16,14 @@ opencv-python==4.5.1.48
 psutil==5.8.0
 pycbrf==1.1.0
 python-dotenv==0.15.0
+python-telegram-bot==13.7
+pytz==2021.1
 requests==2.25.1
+six==1.16.0
 soupsieve==2.2
+tornado==6.1
+tzdata==2021.1
+tzlocal==3.0
 urllib3==1.26.2
 win32-setctime==1.0.3
 yeelight==0.5.4
