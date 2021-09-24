@@ -1,26 +1,28 @@
-from logging import log
-from loguru import logger
-from os import system, mkdir
-from os.path import dirname, isdir, abspath
+from os import system
+from os.path import dirname
 from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
-from datetime import datetime
-import sys
 
 from t_bot.main_t_bot import MainBot
 from rpi_cicd import git_handler
+from utils.d_sh_h_logger import LogHandler
 
+script_path = dirname(__file__)
+logger = LogHandler(script_path=script_path).start()
+VERSION = 0.1
+logger.info(f"Hello there, d_sh_handler v.{VERSION} is starting")
 
 def run_bot():
     """
     Method for chat_bot starting
+    previously subprocess.run(['python3', bot_dir]) was used
     """
-    logger.info('-------------------------')
+    logger.info('-'*30)
     logger.info('trying to start bot')
-    # subprocess.run(['python3', bot_dir])
-    MainBot()
-    logger.info('-------------------------')
+    # MainBot(script_path=script_path)
+    sleep(10)
+    logger.info("-"*30)
 
 
 def run_voice_rec():
@@ -29,9 +31,17 @@ def run_voice_rec():
     """
     logger.info('-------------------------')
     logger.info('trying to start voice_rec')
-    # subprocess.run(['python3', voice_rec_dir])
     sleep(10)
     logger.info('-------------------------')
+
+def run_git_handler():
+    result = git_handler.main()
+    if "updated" in result:
+        logger.info("git handler successfully quited")
+        return True
+    else:
+        logger.error(f"git handler quited with {result}")
+        return False
 
 
 class MainClass:
@@ -72,32 +82,17 @@ class MainClass:
         #
         # ver = open(devices_ver_dir, 'r')
         # ver_devices = ver.read()
-    
-    def rerun_main(self):
-        print("*"*100)
-        logger.info("3"*100)
-        quit()
-
-    def run_git_handler(self):
-        logger.info("1"*100)
-        result = git_handler.main()
-
-        logger.info("2"*100)
-        logger.info(str(result))
-        if "updated" in result:
-            # self.rerun_main()
-            return True
-        else:
-            return False
 
     @logger.catch()
     def start(self):
         logger.info("trying to start scripts")
         chat_bot_process = Process(target=run_bot)
+        chat_bot_process.start()
+        logger.info("Started chat bot")
         voice_recognition_process = Process(target=run_voice_rec)
-        git_process = Process(target=self.run_git_handler)
+        git_process = Process(target=run_git_handler)
         git_process.start()
-        logger.info("Started git checker!!!")
+        logger.info("Started git checker")
         # check current versions for all components
         self.take_versions()
         # kill_voice_rec = False
@@ -110,14 +105,13 @@ class MainClass:
         # main loop
         while True:
             sleep(3)
-            # if chat_bot_process.is_alive() is False:
-            #     logger.info("Started chat_bot")
-            #     chat_bot_process = Process(target=run_bot)
-            #     chat_bot_process.start()
-            #     sleep(1)
+            if chat_bot_process.is_alive() is False:
+                logger.info("Started chat_bot")
+                chat_bot_process = Process(target=run_bot)
+                chat_bot_process.start()
+                sleep(1)
             if git_process.is_alive() is False:
-                # logger.info("Started git checker!")
-                # git_process = Process(target=self.run_git_handler)
+                logger.info("Git handler was stoped somehow, restarting it")
                 quit()
                 
             # TODO restore voice_rec
@@ -203,17 +197,8 @@ if __name__ == '__main__':
 
     main_proc = MainClass()
     # main_proc.check_new_ver_once()
-
-    # TODO think of way to understand
-    path = "/home/pi/d_sh_handler"
-    if isdir(f'{path}/logs') is False:
-        mkdir(f'{path}/logs')
-    logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
-    logger.info(abspath('.'))
-    logger.info(dirname(__file__))
-    logger.info(dirname(__name__))
-    logger.info(sys.path[0])
-
+    
+    
     
     while True:
         try:
