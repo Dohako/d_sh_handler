@@ -1,11 +1,9 @@
-from os import system
 from os.path import dirname
+from os import system
 from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
 
-from t_bot.main_t_bot import MainBot
-from rpi_cicd import git_handler
 from utils.d_sh_h_logger import LogHandler
 
 script_path = dirname(__file__)
@@ -13,21 +11,25 @@ logger = LogHandler(script_path=script_path).start()
 VERSION = 0.1
 logger.info(f"Hello there, d_sh_handler v.{VERSION} is starting")
 
+from t_bot.main_t_bot import MainBot
+from rpi_cicd.git_handler import start_git_check
+
+
 def run_bot():
     """
-    Method for chat_bot starting
+    Function for chat_bot starting
     previously subprocess.run(['python3', bot_dir]) was used
     """
     logger.info('-'*30)
     logger.info('trying to start bot')
-    MainBot(script_path=script_path)
+    MainBot(script_path=script_path).start_bot()
     sleep(10)
     logger.info("-"*30)
 
 
 def run_voice_rec():
     """
-    Method for voice recognition starting
+    Function for voice recognition starting
     """
     logger.info('-------------------------')
     logger.info('trying to start voice_rec')
@@ -35,7 +37,11 @@ def run_voice_rec():
     logger.info('-------------------------')
 
 def run_git_handler():
-    result = git_handler.main()
+    """
+    Function will start git handler and if it will falls
+    it will mean that new version is uploaded and this can be stoped.
+    """
+    result = start_git_check(script_path)
     if "updated" in result:
         logger.info("git handler successfully quited")
         return True
@@ -52,37 +58,6 @@ class MainClass:
     and voice recognition system
     """
 
-    def new_ver_checker(self):
-        pass
-
-    def update_all(self):
-        pass
-
-    def update_voice_rec(self):
-        pass
-
-    def update_chat_bot(self):
-        pass
-
-    def restart_time(self):
-        pass
-
-    def take_versions(self):
-        pass
-        #
-        # global ver_chat_bot, ver_voice_rec, ver_image_proc, ver_devices
-        # ver = open(bot_ver_dir, 'r')
-        # ver_chat_bot = ver.read()
-        #
-        # ver = open(voice_rec_ver_dir, 'r')
-        # ver_voice_rec = ver.read()
-        #
-        # ver = open(image_proc_ver_dir, 'r')
-        # ver_image_proc = ver.read()
-        #
-        # ver = open(devices_ver_dir, 'r')
-        # ver_devices = ver.read()
-
     @logger.catch()
     def start(self):
         logger.info("trying to start scripts")
@@ -93,11 +68,6 @@ class MainClass:
         git_process = Process(target=run_git_handler)
         git_process.start()
         logger.info("Started git checker")
-        # check current versions for all components
-        self.take_versions()
-        # kill_voice_rec = False
-        # kill_bot_proc = False
-        # timers
         time_start = int(time())
         checking_time = time_start
         # checking_new_ver_time = time_start
@@ -114,21 +84,6 @@ class MainClass:
                 logger.info("Git handler was stoped somehow, restarting it")
                 quit()
                 
-            # TODO restore voice_rec
-            # if voice_recognition_process.is_alive() is False:
-            #     pass
-            #
-            #     loguru.logger.info("Started voice_rec")
-            #     voice_recognition_process = multiprocessing.Process(target=run_voice_rec)
-            #     loguru.logger.info(voice_recognition_process.is_alive())
-            #     voice_recognition_process.start()
-            #     time.sleep(1)
-
-            # if checker_process.is_alive() is False:
-            #     loguru.logger.info("Started checker")
-            #     checker_process = multiprocessing.Process(target=new_ver_checker)
-            #     checker_process.start()
-
             # if cpu is bigger than 90% or memory is above 80% - need to turn off scripts and reload them
             if int(time()) > checking_time + 5:
                 checking_time = int(time())
@@ -194,11 +149,8 @@ class MainClass:
 
 
 if __name__ == '__main__':
-
     main_proc = MainClass()
     # main_proc.check_new_ver_once()
-    
-    
     
     while True:
         try:

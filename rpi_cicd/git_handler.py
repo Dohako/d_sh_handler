@@ -8,22 +8,18 @@ from datetime import datetime
 from os.path import dirname, isdir
 import subprocess
 
-def main():
+
+def start_git_check(path):
     # path = dirname(__file__)
-    path = "/home/pi/d_sh_handler"
+    # path = "/home/pi/d_sh_handler"
     if isdir(f'{path}/logs') is False:
         mkdir(f'{path}/logs')
     logger.add(f'{path}/logs/log{datetime.now().strftime("%d%m%Y_%H%M")}.log')
     try:
-        subprocess.run("/home/pi/d_sh_handler/rpi_cicd/git-repo-watcher -d /home/pi/d_sh_handler".split(), check=True, text=True)
+        subprocess.run(f"{path}/rpi_cicd/git-repo-watcher -d /home/pi/d_sh_handler".split(), check=True, text=True)
     except Exception as ex:
         logger.info("*"*100)
         logger.info(ex)
         if "10" in str(ex):
             return "repo is updated"
         raise
-# subprocess.run("dir", 
-# check=True, text=True, shell=True)
-
-if __name__ == '__main__':
-    main()
