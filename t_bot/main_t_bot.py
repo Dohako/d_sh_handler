@@ -33,21 +33,23 @@ class MainBot:
         dispatcher = updater.dispatcher
 
         dispatcher.add_handler(CommandHandler('v', self.volume))
+        dispatcher.add_handler(CommandHandler('logs', self.get_last_logs))
+
         updater.start_polling()
-        logger.info("Started")
-        while True:
-            pass
+        updater.idle()
     
-    @logger.catch
     def volume(self, update:Update, _:CallbackContext):
-        logger.info("Here")
         chat_id = update.message.chat_id
-        update.message.bot.send_message(chat_id=chat_id, text=update.message.text)
+        volume_percent = update.message.text.split(' ')[1]
+        answer = change_volume(volume=volume_percent,logger=logger)
+        logger.info(answer)
+        update.message.bot.send_message(chat_id=chat_id, text=f"set to {volume_percent}")
     
-    def get_last_logs(self, update:Update, bot):
+    def get_last_logs(self, update:Update, _:CallbackContext):
         list_of_files = glob(f'{self.script_path}/logs/*')  # * means all if need specific format then *.csv
         latest_file = max(list_of_files, key=getctime)
         # print(latest_file)
         file_name = latest_file
+        chat_id = update.message.chat_id
         with open(Path(file_name), 'rb') as file:
-            update.bot.send_document(chat_id=ADMINS[0],document=file,filename=file_name)
+            update.bot.send_document(chat_id=chat_id,document=file,filename=file_name)
