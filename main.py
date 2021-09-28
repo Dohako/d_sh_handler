@@ -82,6 +82,7 @@ class MainClass:
                 sleep(1)
             if git_process.is_alive() is False:
                 logger.info("Git handler was stoped somehow, stoping")
+                chat_bot_process.terminate()
                 quit()
                 
             # if cpu is bigger than 90% or memory is above 80% - need to turn off scripts and reload them

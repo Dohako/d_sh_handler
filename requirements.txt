@@ -14,6 +14,7 @@ loguru==0.5.3
 numpy==1.19.5
 opencv-python==4.5.1.48
 psutil==5.8.0
+pyalsaaudio==0.9.0
 pycbrf==1.1.0
 python-dotenv==0.15.0
 python-telegram-bot==13.7
