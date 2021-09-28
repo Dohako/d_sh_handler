@@ -1,3 +1,5 @@
+from logging import log
+from loguru import logger
 from telegram.ext import Updater, CommandHandler
 from telegram import Update
 from dotenv import load_dotenv
@@ -22,7 +24,7 @@ class MainBot:
 
     def start_bot(self):
         updater = Updater(token, use_context=True)
-        text_to_send_to_admins = f"Бот был запущен!"
+        text_to_send_to_admins = f"Бот был запущен!!!"
         updater.bot.send_message(chat_id=ADMINS[0], text=text_to_send_to_admins)
         self.logger.info(text_to_send_to_admins)
 
@@ -30,10 +32,13 @@ class MainBot:
 
         dispatcher.add_handler(CommandHandler('v', self.volume))
         updater.start_polling()
+        logger.info("Started")
         while True:
             pass
     
+    @logger.catch
     def volume(self, update:Update):
+        logger.info("Here")
         chat_id = update.message.chat_id
         update.message.bot.send_message(chat_id=chat_id, text=update.message.text)
     
