@@ -22,7 +22,7 @@ def run_bot():
     """
     logger.info('-'*30)
     logger.info('trying to start bot')
-    MainBot(script_path=script_path).start_bot()
+    MainBot(script_path=script_path, logger=logger).start_bot()
     sleep(10)
     logger.info("-"*30)
 

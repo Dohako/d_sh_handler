@@ -17,13 +17,13 @@ ADMINS = ("388863805", "1")
 
 
 class MainBot:
-    def __init__(self, script_path) -> None:
+    def __init__(self, script_path, logger) -> None:
         self.script_path = script_path
-        self.logger = LogHandler(script_path).start()
+        self.logger = logger
 
     def start_bot(self):
         updater = Updater(token, use_context=True)
-        text_to_send_to_admins = f"Бот был запущен"
+        text_to_send_to_admins = f"Бот был запущен!"
         updater.bot.send_message(chat_id=ADMINS[0], text=text_to_send_to_admins)
         self.logger.info(text_to_send_to_admins)
 
