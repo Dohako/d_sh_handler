@@ -11,6 +11,7 @@ from glob import glob
 from telegram.ext.callbackcontext import CallbackContext
 
 from devices.main_audio import change_volume
+from devices.main_audio import AudioHandler
 
 if not load_dotenv():
     raise FileNotFoundError("There is no .env file")
@@ -41,8 +42,9 @@ class MainBot:
     def volume(self, update:Update, _:CallbackContext):
         chat_id = update.message.chat_id
         volume_percent = update.message.text.split(' ')[1]
-        answer = change_volume(volume=volume_percent,logger=logger)
-        logger.info(answer)
+        # answer = change_volume(volume=volume_percent,logger=logger)
+        # logger.info(answer)
+        audio = AudioHandler().change_volume_alsa(volume_percent)
         update.message.bot.send_message(chat_id=chat_id, text=f"set to {volume_percent}")
     
     def get_last_logs(self, update:Update, _:CallbackContext):
