@@ -8,6 +8,8 @@ from os.path import getctime
 from pathlib import Path
 from glob import glob
 
+from telegram.ext.callbackcontext import CallbackContext
+
 from devices.main_audio import change_volume
 
 if not load_dotenv():
@@ -37,7 +39,7 @@ class MainBot:
             pass
     
     @logger.catch
-    def volume(self, update:Update):
+    def volume(self, update:Update, _:CallbackContext):
         logger.info("Here")
         chat_id = update.message.chat_id
         update.message.bot.send_message(chat_id=chat_id, text=update.message.text)
