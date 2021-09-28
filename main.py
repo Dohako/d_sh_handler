@@ -81,7 +81,7 @@ class MainClass:
                 chat_bot_process.start()
                 sleep(1)
             if git_process.is_alive() is False:
-                logger.info("Git handler was stoped somehow, restarting it")
+                logger.info("Git handler was stoped somehow, stoping")
                 quit()
                 
             # if cpu is bigger than 90% or memory is above 80% - need to turn off scripts and reload them
@@ -91,19 +91,19 @@ class MainClass:
                 if virtual_memory().percent > 90 or cpu_percent() > 90.0:
                     logger.info(virtual_memory().percent)
                     logger.info(cpu_percent())
-                    logger.info("Shutting down voice_rec")
-                    if voice_recognition_process.is_alive():
-                        voice_recognition_process.terminate()
-                    sleep(1)
-                    logger.info(virtual_memory().percent)
-                    logger.info(cpu_percent())
-                    logger.info("Shutting down chat_bot")
-                    if chat_bot_process.is_alive():
-                        chat_bot_process.terminate()
-                    sleep(1)
-                    logger.info(virtual_memory().percent)
-                    logger.info(cpu_percent())
-                    logger.info("Resuming work")
+                    # logger.info("Shutting down voice_rec")
+                    # if voice_recognition_process.is_alive():
+                    #     voice_recognition_process.terminate()
+                    # sleep(1)
+                    # logger.info(virtual_memory().percent)
+                    # logger.info(cpu_percent())
+                    # logger.info("Shutting down chat_bot")
+                    # if chat_bot_process.is_alive():
+                    #     chat_bot_process.terminate()
+                    # sleep(1)
+                    # logger.info(virtual_memory().percent)
+                    # logger.info(cpu_percent())
+                    # logger.info("Resuming work")
 
             # if kill_voice_rec is True:
             #     if voice_recognition_process.is_alive():
