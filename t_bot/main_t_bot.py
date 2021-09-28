@@ -6,7 +6,6 @@ from os.path import getctime
 from pathlib import Path
 from glob import glob
 
-from utils.d_sh_h_logger import LogHandler
 from devices.main_audio import change_volume
 
 if not load_dotenv():
@@ -30,6 +29,7 @@ class MainBot:
         dispatcher = updater.dispatcher
 
         dispatcher.add_handler(CommandHandler('v', self.volume))
+        updater.start_polling()
         while True:
             pass
     
