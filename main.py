@@ -119,9 +119,6 @@ class MainClass:
                 checking_time = int(time())
                 if self.new_ver_checker() is True:
                     pass
-            # every day at 03:00 should be happening reboot of system
-            if self.restart_time() is True:
-                pass
 
     # This two methods should do what?...
     # def set_linux_dirs(self):
