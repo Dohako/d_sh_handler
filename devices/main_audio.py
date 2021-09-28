@@ -36,7 +36,7 @@ def change_volume(volume: str, logger):
     logger.info("Управление звуком зарегистрировано")
     int_volume = normalize_param(volume)
     logger.info(f"{volume}")
-    audio_answer = call(['amixer', '-D', 'pulse', 'sset', 'Master', f'{int_volume}%'])
+    audio_answer = call(['amixer', '-D', 'pulse', 'sset', 'Headphone', f'{int_volume}%'])
     logger.info(str(audio_answer))
     return audio_answer
 
