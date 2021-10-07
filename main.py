@@ -3,6 +3,7 @@ from os import system
 from time import sleep, time
 from multiprocessing import Process
 from psutil import virtual_memory, cpu_percent
+from dotenv import load_dotenv
 
 from utils.d_sh_h_logger import LogHandler
 
@@ -10,6 +11,9 @@ script_path = dirname(__file__)
 logger = LogHandler(script_path=script_path).start()
 VERSION = 0.1
 logger.info(f"Hello there, d_sh_handler v.{VERSION} is starting")
+
+if not load_dotenv():
+    raise FileNotFoundError("There is no .env file")
 
 from t_bot.main_t_bot import MainBot
 from rpi_cicd.git_handler import start_git_check

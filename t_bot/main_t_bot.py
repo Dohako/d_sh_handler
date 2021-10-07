@@ -15,11 +15,10 @@ from devices.main_audio import change_volume
 from devices.main_audio import AudioHandler
 from devices.camera_handler import take_photo
 
-if not load_dotenv():
-    raise FileNotFoundError("There is no .env file")
+# if not load_dotenv('../.env'):
+#     raise FileNotFoundError("There is no .env file")
 token = getenv('MY_TOKEN')
-
-ADMINS = getenv("ADMIN_ID").split(",").strip()
+ADMINS = getenv("ADMIN_ID").replace(' ', '').split(",")
 
 if os_name != 'nt':
     # TODO change to dynamic
