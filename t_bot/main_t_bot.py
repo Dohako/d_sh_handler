@@ -2,7 +2,7 @@ from loguru import logger
 from telegram.ext import Updater, CommandHandler
 from telegram import Update
 from dotenv import load_dotenv
-from os import getenv, name as os_name, mkdir
+from os import error, getenv, name as os_name, mkdir
 from os.path import getctime, abspath, isdir, exists
 from pathlib import Path
 from glob import glob
@@ -87,8 +87,12 @@ class MainBot:
         text = update.message.text
         params = normalize_params(text)
         print(params)
-        result = run(params, check=True, text=True, capture_output=True)
-        message = f"out:\n{result.stdout}\nerror:\n{result.stderr}."
+        try:
+            result = run(params, check=True, text=True, capture_output=True)
+        
+            message = f"out:\n{result.stdout}\nerror:\n{result.stderr}."
+        except Exception as ex: # base exception bad, but i want to see all exceptions
+            message = str(ex)
         update.message.bot.send_message(chat_id=chat_id, text=message)
 
     @logger.catch
