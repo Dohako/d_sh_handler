@@ -7,7 +7,7 @@ from os.path import getctime, abspath, isdir, exists
 from pathlib import Path
 from glob import glob
 from datetime import datetime
-from subprocess import call
+from subprocess import run
 
 from telegram.ext.callbackcontext import CallbackContext
 
@@ -87,9 +87,8 @@ class MainBot:
         text = update.message.text
         params = normalize_params(text)
         print(params)
-        result = call(params)
-
-        update.message.bot.send_message(chat_id=chat_id, text=result)
+        result = run(params, check=True, text=True, capture_output=True)
+        update.message.bot.send_message(chat_id=chat_id, text=result.stdout)
 
     @logger.catch
     def get_photo(self, update:Update, _:CallbackContext):
