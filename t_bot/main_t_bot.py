@@ -19,7 +19,7 @@ if not load_dotenv():
     raise FileNotFoundError("There is no .env file")
 token = getenv('MY_TOKEN')
 
-ADMINS = ("388863805", "1")
+ADMINS = getenv("ADMIN_ID").split(",").strip()
 
 if os_name != 'nt':
     # TODO change to dynamic
@@ -53,6 +53,22 @@ def normalize_params(text:str) -> list:
         result = params
     return result
 
+def is_admin(func):
+    """
+    There obviously is functions/methods that should not be available for all users
+    """
+    def wrap(update: Update, callback: CallbackContext):
+        if update.message:
+            chat_id = update.message.chat_id
+        else:
+            chat_id = update.callback_query.message.chat_id
+        if str(chat_id) in ADMINS:
+            val = func(update,callback)
+        else:
+            val = 0
+            logger.error(f"user {chat_id} made an attempt to reach admin functions")
+        return val
+    return wrap
 
 class MainBot:
     def __init__(self, script_path, logger) -> None:
@@ -79,6 +95,7 @@ class MainBot:
         updater.start_polling()
         updater.idle()
 
+    @is_admin
     def run_shell_command(self, update:Update, _:CallbackContext):
         """
         test with shell commands in one line
