@@ -1,17 +1,18 @@
-from logging import log
 from loguru import logger
 from telegram.ext import Updater, CommandHandler
 from telegram import Update
 from dotenv import load_dotenv
-from os import getenv
-from os.path import getctime
+from os import getenv, name as os_name, mkdir
+from os.path import getctime, abspath, isdir, exists
 from pathlib import Path
 from glob import glob
+from datetime import datetime
 
 from telegram.ext.callbackcontext import CallbackContext
 
 from devices.main_audio import change_volume
 from devices.main_audio import AudioHandler
+from devices.camera_handler import take_photo
 
 if not load_dotenv():
     raise FileNotFoundError("There is no .env file")
@@ -19,6 +20,18 @@ token = getenv('MY_TOKEN')
 
 ADMINS = ("388863805", "1")
 
+if os_name != 'nt':
+    # TODO change to dynamic
+    PHOTO_DIR = "/home/pi/d_sh_handler/photos"
+    VIDEO_DIR = "/home/pi/d_sh_handler/videos"
+else:
+    PHOTO_DIR = abspath('./photos')
+    VIDEO_DIR = abspath('./videos')
+
+if isdir(PHOTO_DIR) is False:
+    mkdir(PHOTO_DIR)
+if isdir(VIDEO_DIR) is False:
+    mkdir(VIDEO_DIR)
 
 class MainBot:
     def __init__(self, script_path, logger) -> None:
@@ -33,13 +46,26 @@ class MainBot:
 
         dispatcher = updater.dispatcher
 
-        dispatcher.add_handler(CommandHandler('v', self.volume))
+        dispatcher.add_handler(CommandHandler('v', self.set_volume))
         dispatcher.add_handler(CommandHandler('logs', self.get_last_logs))
+        dispatcher.add_handler(CommandHandler("p", self.get_photo))
 
         updater.start_polling()
         updater.idle()
+
+    @logger.catch
+    def get_photo(self, update:Update, _:CallbackContext):
+        chat_id = update.message.chat_id
+        photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
+        take_photo(0, photo_name)
+
+        if exists(photo_name):
+            with open(photo_name, 'rb') as photo:
+                update.message.bot.send_photo(chat_id=chat_id, photo=photo)
+        else:
+            update.message.bot.send_message(chat_id=chat_id, text=f"Ошибка с формированием и отправкой фото")
     
-    def volume(self, update:Update, _:CallbackContext):
+    def set_volume(self, update:Update, _:CallbackContext):
         chat_id = update.message.chat_id
         volume_percent = update.message.text.split(' ')[1]
         # answer = change_volume(volume=volume_percent,logger=logger)
