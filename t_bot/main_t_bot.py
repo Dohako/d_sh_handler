@@ -56,13 +56,13 @@ def is_admin(func):
     """
     There obviously is functions/methods that should not be available for all users
     """
-    def wrap(update: Update, callback: CallbackContext):
+    def wrap(_, update: Update, callback: CallbackContext):
         if update.message:
             chat_id = update.message.chat_id
         else:
             chat_id = update.callback_query.message.chat_id
         if str(chat_id) in ADMINS:
-            val = func(update,callback)
+            val = func(_,update,callback)
         else:
             val = 0
             logger.error(f"user {chat_id} made an attempt to reach admin functions")
