@@ -88,7 +88,8 @@ class MainBot:
         params = normalize_params(text)
         print(params)
         result = run(params, check=True, text=True, capture_output=True)
-        update.message.bot.send_message(chat_id=chat_id, text=result.stdout)
+        message = f"out:\n{result.stdout}\nerror:\n{result.stderr}."
+        update.message.bot.send_message(chat_id=chat_id, text=message)
 
     @logger.catch
     def get_photo(self, update:Update, _:CallbackContext):
