@@ -7,6 +7,7 @@ from os.path import getctime, abspath, isdir, exists
 from pathlib import Path
 from glob import glob
 from datetime import datetime
+from subprocess import call
 
 from telegram.ext.callbackcontext import CallbackContext
 
@@ -33,6 +34,26 @@ if isdir(PHOTO_DIR) is False:
 if isdir(VIDEO_DIR) is False:
     mkdir(VIDEO_DIR)
 
+def normalize_params(text:str) -> list:
+    """
+    need to create standard function to normalize parametrs
+    But first need to understand what params there could be
+    """
+    result = list()
+    # for default value list of one 0 will be returned
+    result.append('0')
+    if ' ' in text:
+        if '/' in text:
+            params = text.split(' ')[1:]
+            for param in params:
+                pass # stoped creating here cause of different possible value types...
+            result = params
+    elif "_" in text:
+        params = text.split('_')[1:]
+        result = params
+    return result
+
+
 class MainBot:
     def __init__(self, script_path, logger) -> None:
         self.script_path = script_path
@@ -48,16 +69,44 @@ class MainBot:
 
         dispatcher.add_handler(CommandHandler('v', self.set_volume))
         dispatcher.add_handler(CommandHandler('logs', self.get_last_logs))
+        dispatcher.add_handler(CommandHandler("c", self.run_shell_command))
+
+        # TODO find way to make bellow through regex
         dispatcher.add_handler(CommandHandler("p", self.get_photo))
+        dispatcher.add_handler(CommandHandler("p_1", self.get_photo))
+
 
         updater.start_polling()
         updater.idle()
+
+    def run_shell_command(self, update:Update, _:CallbackContext):
+        """
+        test with shell commands in one line
+        """
+        chat_id = update.message.chat_id
+        text = update.message.text
+        params = normalize_params(text)
+        print(params)
+        result = call(params)
+
+        update.message.bot.send_message(chat_id=chat_id, text=result)
 
     @logger.catch
     def get_photo(self, update:Update, _:CallbackContext):
         chat_id = update.message.chat_id
         photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
-        take_photo(0, photo_name)
+        
+        text = update.message.text
+        params = list()
+        params = normalize_params(text)
+        cam_number = params[0]
+        if cam_number.isdigit():
+            cam_number = int(cam_number)
+            if cam_number > 1 or cam_number < 0:
+                cam_number = 0
+        else:
+            cam_number = 0
+        take_photo(cam_number, photo_name)
 
         if exists(photo_name):
             with open(photo_name, 'rb') as photo:
