@@ -19,6 +19,7 @@ from devices.camera_handler import take_photo
 #     raise FileNotFoundError("There is no .env file")
 token = getenv('MY_TOKEN')
 ADMINS = getenv("ADMIN_ID").replace(' ', '').split(",")
+TRUST_ID = getenv("TRUST_ID").replace(' ', '').split(",")
 
 if os_name != 'nt':
     # TODO change to dynamic
@@ -69,6 +70,20 @@ def is_admin(func):
         return val
     return wrap
 
+def is_trust(func):
+    def wrap(_, update: Update, callback: CallbackContext):
+        if update.message:
+            chat_id = update.message.chat_id
+        else:
+            chat_id = update.callback_query.message.chat_id
+        if str(chat_id) in TRUST_ID:
+            val = func(_,update,callback)
+        else:
+            val = 0
+            logger.error(f"user {chat_id} made an attempt to reach functions")
+        return val
+    return wrap
+
 class MainBot:
     def __init__(self, script_path, logger) -> None:
         self.script_path = script_path
@@ -112,6 +127,7 @@ class MainBot:
         update.message.bot.send_message(chat_id=chat_id, text=message)
 
     @logger.catch
+    @is_trust
     def get_photo(self, update:Update, _:CallbackContext):
         chat_id = update.message.chat_id
         photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
@@ -134,6 +150,7 @@ class MainBot:
         else:
             update.message.bot.send_message(chat_id=chat_id, text=f"Ошибка с формированием и отправкой фото")
     
+    @is_trust
     def set_volume(self, update:Update, _:CallbackContext):
         chat_id = update.message.chat_id
         volume_percent = update.message.text.split(' ')[1]
@@ -142,6 +159,7 @@ class MainBot:
         audio = AudioHandler().change_volume_alsa(volume_percent)
         update.message.bot.send_message(chat_id=chat_id, text=f"set to {volume_percent}")
     
+    @is_admin
     def get_last_logs(self, update:Update, _:CallbackContext):
         list_of_files = glob(f'{self.script_path}/logs/*')  # * means all if need specific format then *.csv
         latest_file = max(list_of_files, key=getctime)
