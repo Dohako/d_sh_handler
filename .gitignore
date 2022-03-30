@@ -148,3 +148,5 @@ logs
 
 *.png
 
+venv3.10/
+.vscode/
