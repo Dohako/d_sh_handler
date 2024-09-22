@@ -1,0 +1,58 @@
+name: Service workflow
+
+on:
+  push:
+    branches: 
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      # - "!dev"
+      # - "!main"
+      
+
+env:
+
+  CLOUD_TESTING: True
+
+jobs:
+  
+  lint-format-type-test:
+    runs-on: self-hosted
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+          cache: 'pipenv'
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pipenv install
+      - name: Update log file for rerun service
+        shell: bash
+        run: |
+          echo "1" >> version.log
+      # - name: Linters, Formatter and Typing check
+      #   shell: bash
+      #   run: |
+      #     cd $(basename ${{ github.repository }})
+      #     # stop the build if there are Python syntax errors or undefined names
+      #     pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+      #     pipenv run flake8 . --exit-zero --count --statistics
+      #     pipenv run black . --check --verbose
+      #     pipenv run isort --profile black . -c
+      #     pipenv run mypy .
+      # # - name: Integrational tests
+      # #   shell: bash
+      # #   run: |
+      # #     cd $(basename ${{ github.repository }})
+      # #     pipenv run coverage run -m pytest tests/integration_tests -vvv
+      # #     pipenv run coverage report -m --include 'api/routes/*' --fail-under=70
+      # - name: Unit tests
+      #   shell: bash
+      #   run: |
+      #     cd $(basename ${{ github.repository }})
+      #     pipenv run coverage run -m pytest . -vvv
+      #     pipenv run coverage report -m --omit 'tests/*'
