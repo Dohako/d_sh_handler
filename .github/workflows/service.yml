@@ -31,6 +31,7 @@ jobs:
           else
             echo "Repository found. Pulling latest changes..."
             cd $REPO_DIR
+            git reset --hard
             git pull --rebase
           fi
       - name: Checkout
@@ -38,7 +39,13 @@ jobs:
         run: |
           # Checkout the desired branch
           git checkout ${{ github.ref_name }}
+      - name: set env variables
+        shell: bash
+        run: |
+          echo "BOT_API_TOKEN=${{ secrets.BOT_API_TOKEN }}" > /home/denis/d_sh_handler/.env
+          echo "TG_ADMIN_ID=${{ secrets.TG_ADMIN_ID }}" >> /home/denis/d_sh_handler/.env
       - name: Log new version to trigger service
         shell: bash
         run: |
-          echo "1" >> /home/denis/version.log
+          chmod 777 /home/denis/d_sh_handler/run.sh
+          echo "1" > /home/denis/version.log
