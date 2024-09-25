@@ -7,8 +7,7 @@ if os_name != 'nt':
 else:
     pass
 
-def set_volume(param:str, logger) -> str:
-    logger.info("Управление звуком зарегистрировано")
+def set_volume(param:str) -> str:
     if os_name != 'nt':
         volume = param
         if volume.isdigit():
@@ -29,15 +28,11 @@ def set_volume(param:str, logger) -> str:
         message = "Не та ОС"
 
     # self.bot.send_message(chat, message)
-    logger.info(message)
     return message
 
-def change_volume(volume: str, logger):
-    logger.info("Управление звуком зарегистрировано")
+def change_volume(volume: str):
     int_volume = normalize_param(volume)
-    logger.info(f"{volume}")
     audio_answer = call(['amixer', '-D', 'pulse', 'sset', 'Headphone', f'{int_volume}%'])
-    logger.info(str(audio_answer))
     return audio_answer
 
 def normalize_param(volume):
