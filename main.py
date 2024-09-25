@@ -38,7 +38,7 @@ if __name__ == "__main__":
     send_raw_telegram_message(
         BOT_API_TOKEN, 
         TG_ADMIN_ID, 
-        f"Hello! Main program has started started, servers time is: {datetime.now().isoformat()}"
+        f"Hello! Main program has started, server time is: {datetime.now().isoformat()}"
     )
-    time.sleep(100)
+    time.sleep(60)
 
