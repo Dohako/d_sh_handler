@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 
 # Replace these with your bot's API token and your chat ID
@@ -33,5 +34,6 @@ def get_updates(bot_token):
 
 if __name__ == "__main__":
     get_updates(BOT_API_TOKEN)
-    send_telegram_message(BOT_API_TOKEN, TG_ADMIN_ID, "hoba")
+    send_telegram_message(BOT_API_TOKEN, TG_ADMIN_ID, "hoba1111")
+    time.sleep(100)
 
