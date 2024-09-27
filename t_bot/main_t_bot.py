@@ -1,3 +1,5 @@
+from datetime import datetime
+import os
 from telegram.ext import CommandHandler, ApplicationBuilder
 from telegram import Update
 
@@ -12,7 +14,7 @@ from telegram.ext._callbackcontext import CallbackContext
 
 # from devices.main_audio import change_volume
 # from devices.main_audio import AudioHandler
-# from devices.camera_handler import take_photo
+from devices.camera_handler import take_photo
 
 # if not load_dotenv('../.env'):
 #     raise FileNotFoundError("There is no .env file")
@@ -81,6 +83,7 @@ class MainBot:
         app = ApplicationBuilder().token(TOKEN).build()
 
         app.add_handler(CommandHandler("c", self.run_shell_command))
+        app.add_handler(CommandHandler("p", self.get_photo))
 
         app.run_polling()
         # updater = Updater(TOKEN, use_context=True)
@@ -119,28 +122,30 @@ class MainBot:
             message = str(ex)
         await update.message._bot.send_message(chat_id=chat_id, text=message)
 
-    # @is_trust
-    # def get_photo(self, update:Update, _:CallbackContext):
-    #     chat_id = update.message.chat_id
-    #     photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
+    @is_admin
+    async def get_photo(self, update:Update, _:CallbackContext) -> None:
+        assert update.message
+        assert update.message._bot
+        chat_id = update.message.chat_id
+        photo_name = f'{PHOTO_DIR}/{datetime.now().strftime("%d%m%Y-%H%M")}.png'
         
-    #     text = update.message.text
-    #     params = list()
-    #     params = normalize_params(text)
-    #     cam_number = params[0]
-    #     if cam_number.isdigit():
-    #         cam_number = int(cam_number)
-    #         if cam_number > 1 or cam_number < 0:
-    #             cam_number = 0
-    #     else:
-    #         cam_number = 0
-    #     take_photo(cam_number, photo_name)
+        # text = update.message.text
+        # params = list()
+        # params = normalize_params(text)
+        cam_number = 0
+        # if cam_number.isdigit():
+        #     cam_number = int(cam_number)
+        #     if cam_number > 1 or cam_number < 0:
+        #         cam_number = 0
+        # else:
+        #     cam_number = 0
+        take_photo(cam_number, photo_name)
 
-    #     if exists(photo_name):
-    #         with open(photo_name, 'rb') as photo:
-    #             update.message.bot.send_photo(chat_id=chat_id, photo=photo)
-    #     else:
-    #         update.message.bot.send_message(chat_id=chat_id, text=f"Ошибка с формированием и отправкой фото")
+        if os.path.exists(photo_name):
+            with open(photo_name, 'rb') as photo:
+                await update.message._bot.send_photo(chat_id=chat_id, photo=photo)
+        else:
+            await update.message._bot.send_message(chat_id=chat_id, text=f"Ошибка с формированием и отправкой фото")
     
     # @is_trust
     # def set_volume(self, update:Update, _:CallbackContext):
