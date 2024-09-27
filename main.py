@@ -48,6 +48,10 @@ def run_bot():
     send_debug_telegram_message('trying to start tg bot')
     MainBot().start_bot()
     sleep(10)
+    
+    
+def get_current_log_file_time():
+    return os.path.getmtime('/home/denis/version.log')
 
 
 class MainClass:
@@ -69,8 +73,20 @@ class MainClass:
         # checking_new_ver_time = time_start
         # checker_process = multiprocessing.Process(target=new_ver_checker)
         # main loop
+        log_file_update_time = None
         while True:
             sleep(3)
+            current_log_file_update_time = get_current_log_file_time()
+            if log_file_update_time and current_log_file_update_time != log_file_update_time:
+                send_debug_telegram_message(
+                    f"Reload initialized on: {datetime.now().isoformat()}"
+                )
+                if chat_bot_process.is_alive():
+                    chat_bot_process.terminate()
+                quit()
+            elif not log_file_update_time:
+                log_file_update_time = current_log_file_update_time
+                
             if chat_bot_process.is_alive() is False:
                 # logger.info("Started chat_bot")
                 chat_bot_process = Process(target=run_bot)
