@@ -15,6 +15,7 @@ from telegram.ext._callbackcontext import CallbackContext
 # from devices.main_audio import change_volume
 # from devices.main_audio import AudioHandler
 from devices.camera_handler import take_photo
+from t_bot.cohere_service import send_text_to_cohere
 from t_bot.gpt_service import send_text_to_gpt
 
 # if not load_dotenv('../.env'):
@@ -86,6 +87,7 @@ class MainBot:
         app.add_handler(CommandHandler("c", self.run_shell_command))
         app.add_handler(CommandHandler("p", self.get_photo))
         app.add_handler(CommandHandler("gpt", self.run_gpt_chat))
+        app.add_handler(CommandHandler("coh", self.run_cohere_chat))
 
         app.run_polling()
         # updater = Updater(TOKEN, use_context=True)
@@ -112,7 +114,18 @@ class MainBot:
         chat_id = update.message.chat_id
         text = update.message.text
         
-        message = send_text_to_gpt(text)
+        message = await send_text_to_gpt(text)
+        
+        await update.message._bot.send_message(chat_id=chat_id, text=message)
+
+    @is_admin
+    async def run_cohere_chat(self, update: Update, _:CallbackContext) -> None:
+        assert update.message
+        assert update.message._bot
+        chat_id = update.message.chat_id
+        text = update.message.text
+        
+        message = await send_text_to_cohere(text)
         
         await update.message._bot.send_message(chat_id=chat_id, text=message)
 

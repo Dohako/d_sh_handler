@@ -45,6 +45,7 @@ jobs:
           echo "BOT_API_TOKEN=${{ secrets.BOT_API_TOKEN }}" > /home/denis/d_sh_handler/.env
           echo "TG_ADMIN_ID=${{ secrets.TG_ADMIN_ID }}" >> /home/denis/d_sh_handler/.env
           echo "GPT_API_KEY=${{ secrets.GPT_API_KEY }}" >> /home/denis/d_sh_handler/.env
+          echo "COHERE_API_KEY=${{ secrets.COHERE_API_KEY }}" >> /home/denis/d_sh_handler/.env
       - name: Log new version to trigger service
         shell: bash
         run: |

@@ -1,3 +1,4 @@
+import asyncio
 import os
 import openai
 
@@ -18,3 +19,10 @@ async def send_text_to_gpt(text: str) -> str:
         return response.choices[0].message.content
     except Exception as e:
         return f"Ошибка при взаимодействии с OpenAI API: {e}"
+
+async def main():
+    result = await send_text_to_gpt("say hello to test")
+    print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
